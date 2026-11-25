@@ -1,0 +1,1369 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>四类 Agent 产品总表：编程 / 办公 / 设计 / 画布（2026-11）</title>
+<style>
+  :root{
+    --ink:#1a1d23; --muted:#5b6472; --line:#dfe5ee; --bg:#f5f7fb;
+    --code:#2f6df6; --office:#0f9d76; --design:#c2410c; --canvas:#7c3aed;
+    --accent:#2f6df6; --danger:#d92d20; --ok:#067647;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    line-height:1.55;font-size:13.5px}
+  header{background:linear-gradient(135deg,#0e1a2f 0%,#1f3a63 60%,#2f6df6 100%);height:120px;padding:0}
+  header .wrap{max-width:1800px;margin:0 auto}
+  h1{margin:0 0 6px;font-size:22px;letter-spacing:.4px}
+  .sub{color:#c9d8f2;font-size:12.5px;margin:0}
+  .chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px;font-size:11.5px;color:#dbe6f8}
+  .chips span{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);padding:2px 9px;border-radius:99px}
+  main{max-width:1800px;margin:0 auto;padding:12px 14px 26px}
+  .toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:2px 0 6px}
+  .toolbar input[type=search]{flex:1 1 220px;min-width:170px;padding:8px 12px;border:1px solid var(--line);
+    border-radius:9px;font-size:13px;background:#fff;color:var(--ink)}
+  .toolbar input[type=search]:focus{outline:2px solid #cfe0ff;border-color:var(--accent)}
+  .toolbar select{padding:8px 10px;border:1px solid var(--line);border-radius:9px;background:#fff;font-size:13px;color:var(--ink)}
+  .btn{border:1px solid var(--line);background:#fff;color:var(--ink);padding:8px 13px;border-radius:9px;
+    font-size:13px;cursor:pointer;white-space:nowrap;font-weight:600;transition:.15s}
+  .btn:hover{border-color:var(--accent);color:var(--accent)}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+  .btn.primary:hover{filter:brightness(1.07);color:#fff}
+  .btn.ghost{color:var(--muted);font-weight:500}
+  .btn.danger-text{color:var(--danger);border-color:#f2c6c2;font-weight:600}
+  .btn:disabled{opacity:.5;cursor:not-allowed}
+  .count{margin-left:auto;color:var(--muted);font-size:12px;white-space:nowrap}
+  .status{color:var(--muted);font-size:12px;margin:0 2px 8px;display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+  .dot{width:7px;height:7px;border-radius:50%;display:inline-block;background:#12b76a;margin-right:5px}
+  .dot.old{background:#f79009}
+  .scroll{overflow:auto;max-height:calc(100vh - 210px);border:1px solid var(--line);border-radius:12px;background:#fff}
+  table{border-collapse:separate;border-spacing:0;width:100%;font-size:12.6px}
+  caption{caption-side:top;text-align:left;padding:10px 12px;background:#fff;border-bottom:1px solid var(--line);
+    font-weight:600;color:#26313f;font-size:13px;position:sticky;top:0;z-index:4}
+  thead th{position:sticky;top:40px;z-index:3;background:#e9f0fa;color:#1f2c40;font-weight:700;
+    border-bottom:1px solid var(--line);border-right:1px solid var(--line);padding:9px;text-align:left;white-space:nowrap}
+  tbody td{border-bottom:1px solid var(--line);border-right:1px solid var(--line);padding:8px 9px;vertical-align:top}
+  tbody tr:nth-child(even) td{background:#fafcff}
+  tbody tr:hover td{background:#f2f7ff}
+  td.num{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums;font-weight:600}
+  td.price{white-space:nowrap;color:#33405a}
+  td.ops{white-space:nowrap;width:1%}
+  .badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:99px;font-weight:700;color:#fff;white-space:nowrap}
+  .b-code{background:var(--code)} .b-office{background:var(--office)}
+  .b-design{background:var(--design)} .b-canvas{background:var(--canvas)}
+  .prod{font-weight:700;display:block}
+  .pos{display:block;color:var(--muted);font-size:11.5px;font-weight:400;margin-top:2px}
+  .upd{display:block;font-size:11px;color:#98a2b3;margin-top:3px}
+  .upd.stale{color:#b54708}
+  ul{margin:0;padding-left:14px}
+  li{margin:1px 0}
+  .anchor{display:block;font-weight:600;color:#33405a}
+  .basis{color:var(--muted);font-size:11.5px;display:block;margin-top:3px}
+  .cust{font-size:12px;line-height:1.5}
+  .cat{font-size:12px;color:#33405a;white-space:nowrap}
+  .buzz{font-size:12px;color:#475467;line-height:1.5}
+  .k{color:#9aa3af}
+  .empty{text-align:center;color:var(--muted);padding:30px}
+  tfoot td{background:#fff8e6;border-top:2px solid #f3d38a;padding:9px 11px;font-size:12px;color:#5c4708}
+  tfoot b{color:#7a5b00}
+  .mask{position:fixed;inset:0;background:rgba(16,24,40,.45);display:none;align-items:center;justify-content:center;z-index:50;padding:18px}
+  .mask.open{display:flex}
+  .modal{background:#fff;border-radius:14px;width:min(820px,100%);max-height:92vh;overflow:auto;box-shadow:0 20px 50px rgba(0,0,0,.25)}
+  .modal h2{margin:0;padding:15px 18px;border-bottom:1px solid var(--line);font-size:16px;display:flex;align-items:center;gap:10px}
+  .modal .body{padding:14px 18px}
+  .modal .foot{display:flex;justify-content:flex-end;gap:8px;padding:12px 18px;border-top:1px solid var(--line);background:#fafcff;position:sticky;bottom:0}
+  .field{display:flex;flex-direction:column;gap:4px;margin-bottom:10px}
+  .field label{font-size:12px;color:var(--muted);font-weight:600}
+  .field input,.field select,.field textarea{border:1px solid var(--line);border-radius:8px;padding:7px 9px;font-size:13px;
+    font-family:inherit;color:var(--ink);background:#fff}
+  .field textarea{resize:vertical;min-height:56px}
+  .field input:focus,.field select:focus,.field textarea:focus{outline:2px solid #cfe0ff;border-color:var(--accent)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px}
+  .modes{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+  .modes label{flex:1 1 180px;border:1px solid var(--line);border-radius:10px;padding:9px 10px;cursor:pointer;font-size:12.5px;background:#fff}
+  .modes label:has(input:checked){border-color:var(--accent);background:#f2f7ff;box-shadow:0 0 0 2px #dbe8ff inset}
+  .modes input{margin-right:6px}
+  .modes b{display:block;font-size:13px;margin-bottom:2px}
+  .modes small{color:var(--muted);font-size:11.5px}
+  .log{background:#0f172a;color:#c7d2fe;border-radius:9px;padding:10px 12px;font-size:12px;
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;max-height:150px;overflow:auto;white-space:pre-wrap;margin-top:6px}
+  .mt8{margin-top:8px}
+  .hintbox{background:#fff8e6;border:1px solid #f3d38a;border-radius:9px;padding:9px 11px;font-size:12px;color:#5c4708;margin-bottom:12px}
+  .diff td{font-size:12px}
+  .old{color:#98a2b3;text-decoration:line-through}
+  .new{color:var(--ok);font-weight:600}
+  .err{color:var(--danger);font-size:12px}
+  .ok{color:var(--ok);font-size:12px}
+  @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  @media print{
+    body{background:#fff;font-size:8.5pt}
+    .toolbar,.mask,.chips,.status{display:none !important}
+    .scroll{max-height:none;border:0;overflow:visible}
+    thead th,caption{position:static}
+    td.ops,th.ops{display:none}
+    table{font-size:8pt}
+  }
+</style>
+</head>
+<body>
+
+<header aria-hidden="true"></header>
+
+<main>
+  <div class="toolbar">
+    <input type="search" id="q" placeholder="查询：产品 / 功能 / 优点 / 缺点 / 价格 / 锚点…" autocomplete="off">
+    <select id="typeFilter" aria-label="按类型筛选"></select>
+    <button class="btn primary" id="addBtn">＋ 新增产品</button>
+    <button class="btn" id="typeMgrBtn">≡ 分类管理</button>
+    <button class="btn" id="syncBtn">⟳ 市场同步</button>
+    <button class="btn" id="csvBtn">导出 CSV</button>
+    <button class="btn ghost" id="resetBtn">恢复默认</button>
+    <span class="count" id="count"></span>
+  </div>
+  <div class="status">
+    <span id="lastSync"><span class="dot old"></span>尚未同步</span>
+    <span id="staleInfo"></span>
+  </div>
+
+  <div class="scroll">
+  <table id="tbl">
+    <caption>Agent产品信息表</caption>
+    <thead>
+      <tr>
+        <th style="min-width:64px">类型</th>
+        <th style="min-width:92px">实用大类</th>
+        <th style="min-width:140px">产品</th>
+        <th style="min-width:250px">核心功能</th>
+        <th style="min-width:170px">优点</th>
+        <th style="min-width:170px">缺点</th>
+        <th style="min-width:200px">用户口碑</th>
+        <th style="min-width:150px">订阅价格</th>
+        <th style="min-width:150px">统一锚点（最小单位）</th>
+        <th style="min-width:150px">折算依据 / 备注</th>
+        <th style="min-width:110px">操作</th>
+      </tr>
+    </thead>
+    <tbody id="tbody"></tbody>
+    <tfoot>
+      <tr><td colspan="11"><b>统一锚点（最小单位）：</b>编程＝1 次单文件修改；办公＝1 页 PPT；设计＝1 张图 / 1 个页面；画布＝1 秒视频（720P）。锚点列同时给出该最小单位的折算单价。</td></tr>
+      <tr><td colspan="11"><b>折算口径：</b>积分单价按"订阅价 ÷ 包含积分"计算——Figma $0.0053/credit、Canva $0.03/credit、Lovart $0.013/积分、扣子 ¥0.001/积分、WPS ¥0.06/灵点、万镜 ¥0.1/点；Copilot 一次动作 5 点（≈$0.05）；Cursor 一次请求 $0.04；Replit 一次 checkpoint $0.25 起。汇率 1 USD ≈ 7.15 CNY。</td></tr>
+      <tr><td colspan="11"><b>免责：</b>本表单价均为按订阅价与公开计费规则折算的<b>估算</b>，不是厂商报价。同步结果为搜索引擎/AI 的公开信息摘要，需人工确认后再作为决策依据。数据核对时间：2026 年 11 月。</td></tr>
+    </tfoot>
+  </table>
+  </div>
+</main>
+
+<!-- ============ 新增 / 编辑弹窗 ============ -->
+<div class="mask" id="mask">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+    <h2 id="mTitle">新增产品</h2>
+    <div class="body">
+      <div class="grid2">
+        <div class="field">
+          <label for="fType">类型（可直接输入新分类）</label>
+          <input id="fType" list="typeList" placeholder="编程 / 办公 / 设计 / 画布，或自定义">
+          <datalist id="typeList"></datalist>
+        </div>
+        <div class="field">
+          <label for="fCat">实用大类（按实际用途）</label>
+          <input id="fCat" list="catList" placeholder="代码开发 / 办公文档 / 通用工作台 / 图像设计 / 视频生成">
+          <datalist id="catList"></datalist>
+        </div>
+        <div class="field">
+          <label for="fName">产品名称 <span style="color:var(--danger)">*</span></label>
+          <input id="fName" placeholder="例如：Claude Code">
+        </div>
+        <div class="field">
+          <label for="fPos">定位（一行）</label>
+          <input id="fPos" placeholder="例如：Anthropic · 终端/IDE 长任务代理">
+        </div>
+        <div class="field">
+          <label for="fUnit">参考单价（同步用，可留空）</label>
+          <input id="fUnit" placeholder="例如：$0.5–3 或 ¥1–3">
+        </div>
+        <div class="field">
+          <label for="fAnchor">统一锚点</label>
+          <input id="fAnchor" placeholder="例如：一个功能点">
+        </div>
+        <div class="field">
+          <label for="fAnchorDesc">锚点说明</label>
+          <input id="fAnchorDesc" placeholder="例如：3–5 文件 / 30–60 分钟">
+        </div>
+      </div>
+      <div class="field"><label for="fFeatures">核心功能（每行一条）</label><textarea id="fFeatures" rows="3"></textarea></div>
+      <div class="field"><label for="fPros">优点（每行一条）</label><textarea id="fPros" rows="3"></textarea></div>
+      <div class="field"><label for="fCons">缺点（每行一条）</label><textarea id="fCons" rows="3"></textarea></div>
+      <div class="field"><label for="fBuzz">用户口碑（一句话）</label><input id="fBuzz" placeholder="例如：好评：…；吐槽：…"></div>
+      <div class="field"><label for="fPrice">订阅价格（每行一档）</label><textarea id="fPrice" rows="2"></textarea></div>
+      <div class="field"><label for="fBasis">折算依据 / 备注</label><textarea id="fBasis" rows="2"></textarea></div>
+    </div>
+    <div class="foot">
+      <span class="err" id="err" style="display:none;margin-right:auto">请填写产品名称</span>
+      <button class="btn" id="cancelBtn">取消</button>
+      <button class="btn primary" id="saveBtn">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 分类管理弹窗 ============ -->
+<div class="mask" id="typeMask">
+  <div class="modal" style="width:min(640px,100%)" role="dialog" aria-modal="true" aria-labelledby="tTitle">
+    <h2 id="tTitle">≡ 分类管理</h2>
+    <div class="body">
+      <p style="margin:0 0 12px;color:var(--muted);font-size:12.5px">
+        新增分类：在「新增 / 编辑产品」的类型框里直接输入即可。这里可以重命名或删除已有分类；删除后该分类下的产品会归入「其他」。
+      </p>
+      <div style="display:flex;gap:8px;margin-bottom:12px">
+        <input id="newTypeInput" placeholder="输入新分类名，例如：视频类 / 搜索类 / 客服类" style="flex:1;min-width:120px;border:1px solid var(--line);border-radius:8px;padding:7px 10px;font-size:13px">
+        <button class="btn primary" id="addTypeBtn" style="padding:7px 12px">＋ 新增分类</button>
+      </div>
+      <div id="typeListBox"></div>
+    </div>
+    <div class="foot"><button class="btn" id="typeClose">关闭</button></div>
+  </div>
+</div>
+
+<!-- ============ 市场同步弹窗 ============ -->
+<div class="mask" id="syncMask">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="sTitle">
+    <h2 id="sTitle">⟳ 市场信息同步</h2>
+    <div class="body">
+      <div class="hintbox">
+        同步在浏览器内完成，Key 只保存在本机 localStorage。可选：① 搜索 API 抓最新公开信息；② 自建数据源 URL；③ 无 Key 时用演示模式看流程。抓取结果一律先进入"待确认"清单，确认后才写入表格。
+      </div>
+
+      <div class="modes">
+        <label><input type="radio" name="syncMode" value="llm" checked><b>联网搜索 + AI 提炼</b><small>需搜索 Key（Tavily）与 LLM Key</small></label>
+        <label><input type="radio" name="syncMode" value="url"><b>数据源 URL</b><small>拉取 JSON，适合自建服务</small></label>
+        <label><input type="radio" name="syncMode" value="demo"><b>演示模式</b><small>不发请求，用样例走一遍流程</small></label>
+      </div>
+
+      <div id="cfgLlm">
+        <div class="grid2">
+          <div class="field">
+            <label for="sSearchKey">Tavily 搜索 Key（可留空，留空则只用模型知识）</label>
+            <input id="sSearchKey" type="password" placeholder="tvly-...">
+          </div>
+          <div class="field">
+            <label for="sQueryTpl">搜索词模板</label>
+            <input id="sQueryTpl" placeholder="{name} 价格 2026 定价">
+          </div>
+          <div class="field">
+            <label for="sLlmBase">LLM Base URL（OpenAI 兼容）</label>
+            <input id="sLlmBase" placeholder="https://api.deepseek.com/v1">
+          </div>
+          <div class="field">
+            <label for="sLlmModel">模型名</label>
+            <input id="sLlmModel" placeholder="deepseek-chat">
+          </div>
+          <div class="field" style="grid-column:1/-1">
+            <label for="sLlmKey">LLM API Key</label>
+            <input id="sLlmKey" type="password" placeholder="sk-...">
+          </div>
+        </div>
+      </div>
+
+      <div id="cfgUrl" style="display:none">
+        <div class="field">
+          <label for="sSourceUrl">数据源 URL（返回 JSON：{"updates":[{name, price:[], unit, basis}]} 或数组）</label>
+          <input id="sSourceUrl" placeholder="https://your-domain.com/agent-updates.json">
+        </div>
+      </div>
+
+      <div class="grid2 mt8">
+        <div class="field">
+          <label for="sScope">同步范围</label>
+          <select id="sScope">
+            <option value="filtered">仅当前筛选结果</option>
+            <option value="all">全部产品</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="sStale">视为过期的天数</label>
+          <input id="sStale" type="number" min="1" value="90">
+        </div>
+      </div>
+
+      <div id="syncLog" class="log" style="display:none"></div>
+    </div>
+    <div class="foot">
+      <span id="syncMsg" style="margin-right:auto;font-size:12px;color:var(--muted)"></span>
+      <button class="btn" id="syncClose">关闭</button>
+      <button class="btn primary" id="syncRun">开始同步</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 待确认变更弹窗 ============ -->
+<div class="mask" id="diffMask">
+  <div class="modal" style="width:min(920px,100%)" role="dialog" aria-modal="true" aria-labelledby="dTitle">
+    <h2 id="dTitle">待确认变更</h2>
+    <div class="body">
+      <p style="margin:0 0 10px;color:var(--muted);font-size:12.5px">勾选要采纳的条目，确认后写入表格并更新"更新于"时间。未勾选的内容不会改动。</p>
+      <div class="scroll" style="max-height:52vh;border-radius:9px">
+        <table class="diff">
+          <thead><tr><th style="width:36px">选</th><th>产品</th><th>价格（旧 → 新）</th><th>锚点单价（旧 → 新）</th><th>说明 / 来源</th></tr></thead>
+          <tbody id="diffBody"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="foot">
+      <button class="btn" id="diffCancel">取消</button>
+      <button class="btn primary" id="diffApply">应用选中项</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var STORE_KEY = "agent-products-v1";
+  var SET_KEY = "agent-settings-v1";
+  var TYPES_KEY = "agent-types-v1";
+  var CLS = {"编程":"b-code","办公":"b-office","设计":"b-design","画布":"b-canvas"};
+
+  var DEFAULTS = [
+    {type:"编程",name:"Claude Code",pos:"Anthropic · 终端/IDE 长任务代理",
+     features:["读写仓库、跑测试、自动修复、提交 PR","多步子 Agent 并行处理不同模块","MCP 接数据库/浏览器/内部系统","/design 接 Claude Design"],
+     pros:["长任务最可靠，复杂重构不易崩","跨文件推理强，适合老仓库改造","能自主“跑测试—改—再跑”"],
+     cons:["额度消耗快，重度易触顶","企业权限/审计需另配","超大仓库索引弱于 IDE 工具"],
+     price:["Pro $20/月","Max $100 / $200","Team 高级席 $100–125","Enterprise $20/席 + API"],
+     anchor:"一个功能点",anchorDesc:"3–5 文件 / 30–60 分钟 / 含跑测试",unit:"$0.5–3",
+     basis:"按 Pro→Max 档均摊；不含 PR 评审与人工返工"},
+    {type:"编程",name:"OpenAI Codex",pos:"OpenAI · 云端异步编码",
+     features:["云端沙箱异步实现并生成 PR","多任务并行，不占本机","与 ChatGPT 账号、仓库授权打通","IDE / CLI 可调用同一能力"],
+     pros:["白天派活、晚上收代码","小任务批量效率极高","非工程师也能用"],
+     cons:["私有化与内网能力弱","架构级重构弱于本地代理","用量计费不透明"],
+     price:["含于 Plus $20 / Pro $100","Business $25/席","按 Codex 式用量另计"],
+     anchor:"一个功能点",anchorDesc:"1 个云端任务 / 30–60 分钟",unit:"$0.5–2",
+     basis:"异步任务按订阅内额度均摊"},
+    {type:"编程",name:"Cursor",pos:"AI 原生 IDE",
+     features:["Tab 补全与多行预测","Agent 模式跨文件修改","代码库语义索引","多模型切换（Claude/GPT/自有）"],
+     pros:["编辑体验最顺，符合肌肉记忆","索引快，覆盖日常 80% 改码","模型可选，可按成本调度"],
+     cons:["订阅 + 用量双层计费","大仓库上下文仍受限","团队治理与审计偏弱"],
+     price:["Hobby 免费","Pro $20/月","Teams $40/席","超出按 token"],
+     anchor:"一个功能点",anchorDesc:"5–10 次快速请求",unit:"$0.2–0.4",
+     basis:"$0.04/次请求（500 次/月口径）"},
+    {type:"编程",name:"Replit Agent 4",pos:"浏览器 · 画布闭环",
+     features:["无限 Design Canvas，预览与 mockup 并排","改画布即改代码","Kanban 协作 + 自动解冲突","一键部署上线"],
+     pros:["产物可运行，验证成本最低","闭环最完整（生成→预览→改→部署）","非工程师可做内部工具"],
+     cons:["按量计费默认无支出上限","复杂架构与性能可控性弱","产物绑定平台，迁移需评估"],
+     price:["Core $20/月","Pro $100/月","按 checkpoint / 部署另计"],
+     anchor:"一个功能点",anchorDesc:"8–15 个 checkpoint",unit:"$2–4",
+     basis:"$0.25 起/checkpoint；含预览与部署"},
+    {type:"办公",name:"Microsoft 365 Copilot",pos:"微软 · 套件内嵌代理",
+     features:["Agent Mode 在 Word/Excel/PPT 默认开启","Researcher / Analyst 专职 Agent","Copilot Chat + Studio 自建 Agent","Copilot Pages 持久协作页"],
+     pros:["原生格式零损耗，对外交付最稳","组织图谱与权限体系最深","席位即渠道，采购路径最短"],
+     cons:["AI 税重，真实成本为标价 2–3 倍","约 3% 客户认为价值“显著”","第 3 个月使用塌陷常见"],
+     price:["$30/席/月","Copilot Business $21/席","Studio 按 Credits 计量"],
+     anchor:"一份 12 页 PPT",anchorDesc:"大纲+配图+排版+1 次修订",unit:"$1–3",
+     basis:"20–60 个动作 × 5 点（≈$0.05/动作）"},
+    {type:"办公",name:"ChatGPT Work",pos:"OpenAI · 通用工作台",
+     features:["自主拆解任务并调用 Slack/Drive/SharePoint","交付文档、表格、PPT、小型 Web 应用","Pages 协作页（2026-09）","定时任务、Slack/Teams 内 @ChatGPT"],
+     pros:["模型能力上限最高，疑难兜底强","交付跨度最大：一段文字到一个应用","免费即可用桌面端，自下而上渗透"],
+     cons:["企业治理与格式生态浅","提示注入被列为主要风险","席位渗透与企业采购经验弱"],
+     price:["Plus $20/月","Business $25/席（年付 $20）","Pro $100 / Enterprise 定制"],
+     anchor:"一份 12 页 PPT",anchorDesc:"大纲+配图+排版+1 次修订",unit:"$0.5–2",
+     basis:"1–2 次深度任务；配图另计"},
+    {type:"办公",name:"Claude Cowork + Docs/Slides",pos:"Anthropic · 跨应用一致性",
+     features:["Cowork 在文件沙箱执行多步任务","Claude Docs/Slides（beta），可导出 PPT/PDF","Excel/PPT/Word 四应用共享一段对话","Artifacts 生成可分享产物"],
+     pros:["跨应用一致性最好，解决“三份材料对不上”","长任务稳定，适合咨询/分析","代码与文件操作可靠"],
+     cons:["企业分发与协作弱于微软","Docs/Slides 仍是 beta","大规模席位管理经验较少"],
+     price:["Pro $20/月","Max $100 / $200","Team $20–25 / 高级 $100–125"],
+     anchor:"一份 12 页 PPT",anchorDesc:"大纲+配图+排版+1 次修订",unit:"$0.5–2",
+     basis:"1–2 次任务；一致性最强"},
+    {type:"办公",name:"扣子（Coze）企业版",pos:"字节 · 低门槛一站式",
+     features:["技能体系：搜索/文档/PPT/表格/图像/视频","工作流 + AI 编程开发技能与应用","文档导出、去水印、自定义 PPT 模板","积分按席位赠送（约 6.9 万/人月）"],
+     pros:["价格最低、上手最快","中文场景全覆盖","国内可用、可开票、无网络门槛"],
+     cons:["深度定制与私有化弱","积分消耗速度影响重度体验","企业治理弱于大厂平台"],
+     price:["标准版 ¥166/月（2 成员）","旗舰版 ¥3,360/月（20 成员）","增购约 ¥69/人月"],
+     anchor:"一份 12 页 PPT",anchorDesc:"大纲+配图+排版+1 次修订",unit:"¥1–3",
+     basis:"1,000–3,000 积分 × ¥0.001"},
+    {type:"办公",name:"WPS 灵犀",pos:"金山 · 中文套件同屏",
+     features:["左文档右助手，边写边改不切窗口","AIPPT 一键生成演示文稿","表格公式/透视的自然语言操作","个人知识库 + 语音助手"],
+     pros:["中文排版与公文格式最贴合","¥48 起，价格是海外零头","零迁移，WPS 用户直接可用"],
+     cons:["灵点消耗快，用户抱怨集中","会员分层复杂，信任包袱重","生态与格式兼容弱于微软"],
+     price:["¥48 / ¥128 / ¥398 每月","每月赠 800 灵点","付费灵点月底清零"],
+     anchor:"一份 12 页 PPT",anchorDesc:"大纲+配图+排版+1 次修订",unit:"¥3–12",
+     basis:"50–200 灵点 × ¥0.06"},
+    {type:"设计",name:"Figma（Agent + Weave）",pos:"设计系统级画布",
+     features:["画布内嵌 Agent（2026-05 起 / 10 月 GA）","Make / First Draft 生成可编辑设计稿","设计系统与变量（组件、样式、令牌）","AI credits 统一计费"],
+     pros:["与设计系统、协作、交付链路打通","财务健康（毛利 84%、NRR 136%）","企业采购与治理成熟"],
+     cons:["生成语义与设计意图理解仍是短板","Make 被定位为“起点而非成品”","免费额度对重度用户不够"],
+     price:["Free 500 credits/月","Professional $16–20/席","Organization $55 / Ent $90"],
+     anchor:"一张电商主图",anchorDesc:"1080×1080 / 分层可编辑 / 含 1 次改稿",unit:"$0.3–1.6",
+     basis:"1–2 次生成 + 1 次改稿 ≈ 60–300 credits × $0.0053"},
+    {type:"设计",name:"Canva（Design Model）",pos:"全民出图",
+     features:["自研 Design Model 输出分层可编辑对象","AI 2.0：对话式设计、Memory Library、连接器","品牌套件与多尺寸自动适配","Magic Studio：去背景、扩图、批量改尺寸"],
+     pros:["2.6 亿 MAU，模板生态最全","门槛最低，30 分钟出第一张图","品牌一致性有产品化保障"],
+     cons:["专业深度不足，难承接高端品牌","风格容易同质化","免费积分一次性，很快见底"],
+     price:["Free 50 积分","Pro $15/月（500 credits）","Teams $10/席 / Enterprise 定制"],
+     anchor:"一张电商主图",anchorDesc:"1080×1080 / 分层可编辑 / 含 1 次改稿",unit:"$0.06–0.09",
+     basis:"2–3 credits × $0.03"},
+    {type:"设计",name:"Adobe Firefly Boards",pos:"版权安全",
+     features:["Firefly 模型训练数据合规","Boards 白板：生成、拼贴、协作","与 Creative Cloud 资产、字体、品牌库打通","企业版含 IP 赔偿与审核流（以合同为准）"],
+     pros:["版权安全，法务能签字","可复用既有创意资产","企业采购体系成熟"],
+     cons:["生成能力弱于新兴产品","迭代速度慢","价格不透明，常捆绑销售"],
+     price:["企业定制","常与 Creative Cloud 企业版捆绑","个人版订阅 + 生成积分"],
+     anchor:"一张电商主图",anchorDesc:"1080×1080 / 分层可编辑 / 含 1 次改稿",unit:"$0.06–0.3",
+     basis:"2–3 张生成 × $0.03–0.1/张（估算）"},
+    {type:"画布",name:"Lovart",pos:"演语科技 · 无限画布",
+     features:["Coco 前台 + 设计/图像/视频/海报/IP 五类 Agent handoff","圈注改稿、局部替换","2.0 Arti：记忆库、委托额度、Skill 沉淀","多方案并置比较"],
+     pros:["端到端视觉产能，接近替代一次外包","把设计流程产品化（多 Agent 编排）","商业化已验证（ARR 约 3 亿美元）"],
+     cons:["毛利低（口径 <30%），依赖补贴换量","跨物料风格一致性需人工把关","积分按月清零，成本焦虑明显"],
+     price:["$19.93 / $39.95","$89.97 / $159.99 四档","积分按月清零"],
+     anchor:"一条 8 秒商品短视频",anchorDesc:"含 1 次重生成",unit:"$0.5–1.6",
+     basis:"约 40–120 积分 × $0.013（估算）"},
+    {type:"画布",name:"即梦",pos:"字节 · 内容生产",
+     features:["文生图 / 图生视频 / 文生视频","无限画布 + 右侧 Agent，生成物直接落画布","批量生成（最多 32 张）","局部重绘、抠图、扩图、文字重绘"],
+     pros:["免费额度可试，试错成本最低","贴合抖音/小红书内容生态","批量能力强，适合电商铺货"],
+     cons:["精细控制弱于专业设计工具","会员与积分规则调整频繁","商用授权需逐条确认"],
+     price:["免费额度 + 会员订阅","（档位与积分以站内为准）"],
+     anchor:"一条 8 秒商品短视频",anchorDesc:"含 1 次重生成",unit:"未公开",
+     basis:"按站内积分扣点；免费额度可覆盖试拍"},
+    {type:"画布",name:"万镜一刻（阿里云）",pos:"视频流水线",
+     features:["故事板 / 无限画布 / Agent 三种模式","「Agent + 无限画布」节点二次编辑","场景模板：短漫剧、投流、电商种草","云上算力与批量队列"],
+     pros:["批量产能稳定，适合每天几十条素材","价格门槛低（¥39 起）","阿里云生态，账号/存储/数据打通"],
+     cons:["创作者生态较薄","跨镜头一致性与交付规范仍在打磨","基础版与标准版价差 75 倍"],
+     price:["基础版 ¥39/月（原价 ¥99）","标准版 ¥2,999/月","积分包 ¥100/1,000 点"],
+     anchor:"一条 8 秒商品短视频",anchorDesc:"含 1 次重生成",unit:"¥5–20",
+     basis:"50–200 点 × ¥0.1/点；批量递减"},
+    {type:"画布",name:"腾讯妙境（Miora）",pos:"品牌全案",
+     features:["多 Agent 分工：图片/视频/3D/品牌规范","品牌全案交付（概念→成套物料）","3D 资产与视频能力","2026-07 国际版全量"],
+     pros:["成套交付，接近替代一次品牌外包","3D 与视频差异化明显","腾讯生态与算力支撑"],
+     cons:["公开信息与定价透明度低","企业治理与审计能力待验证","交付一致性仍需人工把关"],
+     price:["企业定制","商务报价（公开价目有限）"],
+     anchor:"一条 8 秒商品短视频",anchorDesc:"含 1 次重生成",unit:"未公开",
+     basis:"按项目（套）报价，需确认含视频/3D 数量"},
+
+    /* ===== 前端设计类 ===== */
+    {type:"设计",cat:"前端设计",name:"Framer",pos:"网站设计 + 发布一体",
+     features:["AI 生成整站/页面，设计即上线","响应式与 CMS 内置","交互与动画可视化编辑","自定义域名与 SEO"],
+     pros:["设计到发布零切换","上线速度快","适合营销页与官网"],
+     cons:["复杂 Web 应用能力弱","导出受限，绑定平台","价格随站点数上升"],
+     price:["Mini $5/月","Basic $15/月","Pro $30/月","Enterprise 定制"],
+     anchor:"一张电商主图",anchorDesc:"1080×1080 / 分层可编辑 / 含 1 次改稿",unit:"≈ ¥3–20/页",
+     basis:"按订阅均摊：每月产出 1–5 页"},
+
+    {type:"设计",cat:"前端设计",name:"v0（Vercel）",pos:"提示词生成前端界面",
+     features:["文本/截图生成 React 页面","可迭代修改与组件化","一键部署到 Vercel","支持设计系统与 Tailwind"],
+     pros:["产物是可运行的前端代码","与部署链路打通","迭代速度快"],
+     cons:["偏工程、设计师上手有门槛","质量依赖提示词","按积分计费"],
+     price:["Free 有限额度","Premium $20/月","Team $30/席起"],
+     anchor:"一张电商主图",anchorDesc:"1080×1080 / 分层可编辑 / 含 1 次改稿",unit:"≈ ¥2–10/页",
+     basis:"按订阅额度均摊：每月 3–8 页"},
+
+    {type:"设计",cat:"前端设计",name:"Google Stitch",pos:"免费 UI 设计画布",
+     features:["节点式无限画布：图/代码/PRD 同放","Agent 读整块画布上下文，跨屏操作","语音交互、一键转原型","导出 DESIGN.md 规范"],
+     pros:["完全免费","整块画布上下文强","导出规范可直接交接"],
+     cons:["企业治理与协作弱","商业化路径未定","生态尚早期"],
+     price:["免费（Google Labs）","企业版未公布"],
+     anchor:"一张电商主图",anchorDesc:"1080×1080 / 分层可编辑 / 含 1 次改稿",unit:"免费",
+     basis:"免费使用，无按张/按页计费"},
+
+    /* ===== 图像设计类 ===== */
+    {type:"设计",cat:"图像设计",name:"Midjourney",pos:"高质量图像生成",
+     features:["文生图，风格化能力突出","图生图 / 局部重绘","Style / Character Reference 保持一致性","网页版与 Discord 双入口"],
+     pros:["审美质量天花板","风格一致性工具成熟","社区与提示词生态大"],
+     cons:["可控性弱于设计工具","无分层可编辑","商用需注意条款"],
+     price:["Basic $10/月","Standard $30/月","Pro $60/月","Mega $120/月"],
+     anchor:"一张电商主图",anchorDesc:"1080×1080 / 分层可编辑 / 含 1 次改稿",unit:"≈ ¥0.36–0.6/张",
+     basis:"按 Basic $10 ÷ 约 200 张折算"},
+
+    {type:"设计",cat:"图像设计",name:"Adobe Photoshop（生成式填充）",pos:"专业修图 + 生成式 AI",
+     features:["生成式填充 / 扩图 / 移除","与图层、蒙版、Camera Raw 一体","Firefly 模型，商用相对合规","与 Creative Cloud 资产打通"],
+     pros:["专业精修能力最强","版权相对安全","设计师既有工作流"],
+     cons:["订阅成本高","生成速度一般","学习曲线陡"],
+     price:["摄影计划 $9.99/月","Creative Cloud 全应用 $59.99/月","企业定制"],
+     anchor:"一张电商主图",anchorDesc:"1080×1080 / 分层可编辑 / 含 1 次改稿",unit:"≈ ¥0.3–1/次",
+     basis:"按订阅内含生成额度折算"},
+
+    {type:"设计",cat:"图像设计",name:"Recraft",pos:"品牌视觉与矢量生成",
+     features:["文生图 / 矢量图 / 图标 / 品牌套件","Brand Style 保持风格一致","可导出 SVG","API 与企业版"],
+     pros:["少有的矢量生成能力","品牌风格统一","导出可直接用于生产"],
+     cons:["生态小于 Canva","中文支持一般","高级功能订阅较贵"],
+     price:["Free 50 credits/日","Basic $12/月","Advanced $48/月","Enterprise 定制"],
+     anchor:"一张电商主图",anchorDesc:"1080×1080 / 分层可编辑 / 含 1 次改稿",unit:"≈ ¥0.09–0.2/张",
+     basis:"按 Basic $12 ÷ 约 1,000 credits 折算"},
+
+    /* ===== 中小团队产品 ===== */
+    {type:"编程",cat:"代码开发",name:"Windsurf",pos:"Codeium · AI 原生 IDE",
+     features:["Cascade 多步 Agent，跨文件改代码","IDE 内补全与对话","本地索引 + 企业部署","多模型可选"],
+     pros:["免费额度大方","Agent 体验接近 Cursor","企业版支持私有部署"],
+     cons:["插件生态少于 Cursor","复杂重构偶发失控","品牌路线变动较多"],
+     price:["Free","Pro $15/月","Teams $30/席","Enterprise $60/席"],
+     anchor:"一个功能点",anchorDesc:"3–5 文件 / 30–60 分钟",unit:"≈ ¥1.0–2.9 / 次",
+     basis:"按 Pro 档均摊：5–10 次请求/功能点"},
+
+    {type:"编程",cat:"代码开发",name:"Bolt.new",pos:"StackBlitz · 提示词出全栈应用",
+     features:["浏览器内生成全栈应用","实时预览与一键部署","支持 npm 生态","代码可导出"],
+     pros:["几分钟出可运行原型","无需本地环境","不锁定平台"],
+     cons:["复杂项目易失控","按 token 计费波动大","企业治理弱"],
+     price:["Free","Pro $20/月","Teams $30/席"],
+     anchor:"一个功能点",anchorDesc:"3–5 文件 / 30–60 分钟",unit:"≈ ¥3–8 / 次",
+     basis:"按 Pro 档均摊：每次生成 1 个原型"},
+
+    {type:"办公",cat:"办公文档",name:"Gamma",pos:"AI 生成演示文稿与网页",
+     features:["一句话生成整套 PPT","卡片式编辑，可导出 PPT/PDF","模板与品牌主题","网页发布"],
+     pros:["出稿快、审美在线","导出兼容 PowerPoint","非设计师友好"],
+     cons:["复杂版式控制弱","免费额度少","模板同质化"],
+     price:["Free 400 credits","Plus $10/月","Pro $20/月"],
+     anchor:"一份 12 页 PPT",anchorDesc:"大纲+配图+排版",unit:"≈ ¥0.3–1.0 / 页",
+     basis:"按 Plus 档均摊：一份 12 页约 ¥3–12"},
+
+    {type:"办公",cat:"通用工作台",name:"Manus",pos:"通用任务 Agent（中国团队）",
+     features:["端到端执行研究、做表、出 PPT","浏览器操作与文件处理","定时任务","多 Agent 协作"],
+     pros:["交付跨度大","适合非结构化任务","按积分可小步试"],
+     cons:["积分消耗快","结果稳定性波动","企业治理弱"],
+     price:["Free 300 credits/日","Pro $20/月","Pro+ $40/月","Team $20/席"],
+     anchor:"一份 12 页 PPT",anchorDesc:"大纲+配图+排版",unit:"≈ ¥0.5–2.0 / 页",
+     basis:"按 Pro 档均摊：一份 PPT 约 5–15 次任务"},
+
+    {type:"设计",cat:"图像设计",name:"Ideogram",pos:"文字渲染见长的图像生成",
+     features:["文生图，擅长图内文字","Magic Prompt 提示词优化","风格与比例控制","批量生成"],
+     pros:["海报文字准确率高","上手简单","价格低"],
+     cons:["风格多样性弱于 Midjourney","无分层编辑","企业能力弱"],
+     price:["Free 10 张/日","Basic $8/月","Plus $20/月","Pro $60/月"],
+     anchor:"一张电商主图",anchorDesc:"1080×1080 / 含 1 次改稿",unit:"≈ ¥0.2–0.5 / 张",
+     basis:"按 Basic $8 ÷ 约 400 张折算"},
+
+    {type:"画布",cat:"图像设计",name:"Krea",pos:"实时生成画布",
+     features:["实时画布，边画边生成","图像增强与放大","视频生成","风格参考"],
+     pros:["实时交互体验独特","放大/增强质量好","迭代速度快"],
+     cons:["稳定性一般","价格档位跨度大","中文支持弱"],
+     price:["Free","Basic $10/月","Pro $30/月","Max $60/月"],
+     anchor:"一张电商主图",anchorDesc:"1080×1080 / 含 1 次改稿",unit:"≈ ¥0.2–0.8 / 张",
+     basis:"按 Basic 档均摊：每月 30–100 张"}
+  ];
+  DEFAULTS.forEach(function(d){ d.updatedAt = "2026-11-01"; });
+
+  // 大厂产品不再展示（保留数据便于日后恢复）
+  var HIDDEN_NAMES = [];
+  function visibleDefaults(){
+    return clone(DEFAULTS).filter(function(d){ return HIDDEN_NAMES.indexOf(d.name) < 0; });
+  }
+
+  /* ===== 细分单价：按规格/分辨率/动作的精确或估算单价 ===== */
+  var TIERS = {
+    "Claude Code":["按 token 计费，订阅内额度","Pro 档约 30–60 个功能点/月","Max 档约 100–300 个功能点/月","超出按 API 价（约 $3–15/百万 token）"],
+    "OpenAI Codex":["含于 ChatGPT 订阅额度","Plus 档约 30–60 个功能点/月","Pro 档并发更高，约 100–200 个/月"],
+    "Cursor":["Tab 补全：订阅内，不单独计费","快速请求 ≈ $0.04/次","Pro 含 500 次/月，Teams 同额","超出按 token 计费"],
+    "Replit Agent 4":["checkpoint ≈ $0.25/次","一个页面 ≈ 3–8 次 checkpoint","一次部署 ≈ $0.25–1","按量计费，默认无支出上限"],
+    "GitHub Copilot Enterprise":["Enterprise $39/席/月，含 premium requests 额度","Business $19/席/月","超出按 premium request 计费","2026 起逐步转向按量计费（以官网为准）"],
+    "Amazon Q Developer":["Pro $19/用户/月","Enterprise 定制","无单独按次计费，按席位封顶"],
+    "Gemini Code Assist Enterprise":["Standard $19/用户/月","Enterprise $45/用户/月（年付）","按席位，无单独按次"],
+
+    "Microsoft 365 Copilot":["1 点 ≈ ¥0.072（$0.01）","生成答案 2 点 ≈ ¥0.14","动作 5 点 ≈ ¥0.36","推理 10 点/千 token ≈ ¥0.72"],
+    "ChatGPT Work":["Plus $20/月：约 30–60 份 PPT/月","Business $25/席（年付 $20）","按 Codex 式用量，超出另计"],
+    "Claude Cowork + Docs/Slides":["Pro $20/月：约 20–40 份材料/月","Max $100 / $200","Team $20–25 / 高级 $100–125"],
+    "扣子（Coze）企业版":["1 积分 ≈ ¥0.001","¥69/人月含 6.9 万积分 ≈ ¥69","12 页 PPT 1,000–3,000 积分 ≈ ¥1–3"],
+    "WPS 灵犀":["1 灵点 ≈ ¥0.06","赠 800 灵点/月 ≈ ¥48","12 页 PPT 50–200 灵点 ≈ ¥3–12"],
+    "Google Gemini Enterprise":["$30/席/月（年付）","Business $21/席/月","Agent 动作暂未单独计费"],
+    "钉钉悟空":["算粒 ¥9.8/200 = ¥0.049/粒","12 页 PPT ≈ 100–400 粒","≈ ¥5–20/份"],
+    "飞书 aily":["AI 积分制：联网回答 3 积分/次（官方）","套餐与积分单价需登录控制台查看","企业版按合同报价"],
+    "Notion Enterprise Agents":["Business $20/席含 1,500 Standard + 500 Select credits","credits 单价未公开，按席位均摊","12 页 PPT 300–800 credits ≈ ¥3.6–14.3"],
+
+    "Figma（Agent + Weave）":["1 credit ≈ ¥0.038（Pro 档 $16/3,000）","生图 2–16 credits ≈ ¥0.08–0.6/张","去背景 1–5 ≈ ¥0.04–0.19","Make 30–300 credits ≈ ¥1.1–11.4","Full 席位 3,000–4,250 credits/月"],
+    "Canva（Design Model）":["1 次生成 ≈ ¥0.5（Pro 200 次/月口径）","Business / Enterprise 400 次/月 ≈ ¥0.27/次","视频固定 4 秒/条"],
+    "Adobe Firefly Boards":["标准生图 1–2 积分/张（估算）","视频按秒/次扣点（未公开）","企业版含月度生成额度"],
+    "Adobe Express for Enterprise":["企业定制，含月度生成额度","单张价格需登录/商务","定价页 adobe.com/products/firefly/plans"],
+    "稿定设计 企业版":["按年授权，单张需询价","报价页 qiye.gaoding.com/solution/buy-svip"],
+    "Pixso 企业版":["按席位/年，生成单价含在席位内","定价页 pixso.cn/price"],
+
+    "Lovart":["1 积分 ≈ ¥0.095（Starter 档）","图 10–30 积分 ≈ ¥0.95–2.9/张","8 秒视频 40–120 积分 ≈ ¥3.8–11.4","圈注改稿 3–10 积分 ≈ ¥0.3–0.95","积分按月清零"],
+    "即梦":["积分价未公开，按同档估 ¥0.1–0.3/积分","5 秒约 5–20 积分 ≈ ¥0.5–6（估算）","10 秒约 10–40 积分 ≈ ¥1–12（估算）","官方定价页 jimeng.jianying.com"],
+    "万镜一刻（阿里云）":["积分 ¥0.1/点","8 秒视频 50–200 点 ≈ ¥5–20","1 分钟短剧 ≈ ¥20–80","批量按条数线性叠加"],
+    "腾讯妙境（Miora）":["按套报价，需商务询价","含图片 / 视频 / 3D 资产","官网 miora.qq.com（需登录）"],
+    "LiblibAI 企业版":["会员 + 算力包，单价需登录","按模型与分辨率扣算力","官网 liblib.art（需登录）"],
+    "阿里云通义万相（企业版）":["480P $0.0636/秒 ≈ ¥0.45","720P $0.1272/秒 ≈ ¥0.91","1080P $0.2544/秒 ≈ ¥1.82","8 秒 1080P ≈ ¥14.6"]
+  };
+  function tierList(d){
+    var arr = (d.tiers && d.tiers.length) ? d.tiers : (TIERS[d.name] || []);
+    return toList(arr);
+  }
+
+  /* ===== 积分（点数）→ 人民币换算，仅保留单位换算 ===== */
+  var CONV = {
+    "Claude Code":["无积分制，按 token 计费（订阅内含额度）"],
+    "OpenAI Codex":["无积分制，按用量计费（含于 ChatGPT 订阅）"],
+    "Cursor":["1 次快速请求 ≈ ¥0.29（$0.04）"],
+    "Replit Agent 4":["1 次 checkpoint ≈ ¥1.8（$0.25）"],
+    "Microsoft 365 Copilot":["1 点 ≈ ¥0.072（$0.01）","动作 5 点 ≈ ¥0.36","生成答案 2 点 ≈ ¥0.14"],
+    "ChatGPT Work":["无积分制，按席位 + 用量"],
+    "Claude Cowork + Docs/Slides":["无积分制，按席位 + 用量"],
+    "扣子（Coze）企业版":["1 积分 ≈ ¥0.001"],
+    "WPS 灵犀":["1 灵点 ≈ ¥0.06"],
+    "Figma（Agent + Weave）":["1 credit ≈ ¥0.038（Pro 档 $16/3,000）"],
+    "Canva（Design Model）":["1 次生成 ≈ ¥0.5（Pro 200 次/月）"],
+    "Adobe Firefly Boards":["1 积分 ≈ ¥0.03–0.1（估算）"],
+    "Lovart":["1 积分 ≈ ¥0.095（Starter 档）"],
+    "即梦":["1 积分 ≈ ¥0.1–0.3（估算，会员价未公开）"],
+    "万镜一刻（阿里云）":["1 点 = ¥0.1"],
+    "腾讯妙境（Miora）":["按套报价，无公开积分价"]
+  };
+  function convList(d){
+    var arr = (d.tiers && d.tiers.length) ? d.tiers : (CONV[d.name] || []);
+    return toList(arr);
+  }
+
+  /* ===== 用户口碑：来自公开社区/评测的典型评价摘要 ===== */
+  var BUZZ = {
+    "Claude Code":"口碑最好：长任务稳、改老仓库强；吐槽额度消耗快",
+    "OpenAI Codex":"好评：异步并行省心；差评：复杂重构弱、计费不透明",
+    "Cursor":"公认编辑体验最顺；抱怨订阅 + 用量双计费",
+    "Replit Agent 4":"非工程师好评；投诉集中在按量无上限、账单失控",
+    "Windsurf":"好评：免费额度大方、Agent 顺；吐槽插件生态少",
+    "Bolt.new":"好评：几分钟出全栈原型；差评：复杂项目易失控",
+
+    "ChatGPT Work":"能力被认可；企业用户吐槽格式导出与治理",
+    "Claude Cowork + Docs/Slides":"长文与一致性好评；吐槽协作与版本能力弱",
+    "WPS 灵犀":"中文办公好评；灵点消耗快被集中吐槽",
+    "Gamma":"出稿快、审美在线；吐槽模板同质化、导出受限",
+    "Manus":"惊艳于端到端交付；吐槽积分消耗快、结果不稳",
+
+    "Figma（Agent + Weave）":"设计师基本盘稳固；吐槽 AI 生成语义弱",
+    "Framer":"上线快、模板好；吐槽绑定平台、导出受限",
+    "v0（Vercel）":"前端好评；设计师嫌门槛高",
+
+    "Canva（Design Model）":"小白友好；专业设计师嫌深度不足",
+    "Lovart":"成套出图好评；吐槽积分月清零、一致性靠人工",
+    "Midjourney":"审美天花板；吐槽可控性差、无分层",
+    "Recraft":"矢量生成独一份；吐槽生态小、中文弱",
+    "Ideogram":"图内文字准；吐槽风格单一",
+    "Krea":"实时画布惊艳；吐槽稳定性与价格跨度"
+  };
+  function buzz(d){ return (d.buzz && d.buzz.trim()) || BUZZ[d.name] || "—"; }
+
+  /* ===== 三档锚点：把统一锚点按规模/规格再切三档 ===== */
+  var ANCHOR_TIERS = {
+    "编程":["① 小改：单文件 / 约 30 分钟","② 功能点：3–5 文件 / 约 1 小时","③ 需求级：5–10 文件 / 半天"],
+    "办公":["① 简报：5 页","② 标准：12 页 PPT","③ 方案：30 页"],
+    "设计":["① 1K 方图 1080×1080","② 2K 主图 2048×2048","③ 4K 长图 / 3 张套图"],
+    "画布":["① 5 秒 720P","② 8 秒 1080P","③ 15 秒 1080P"]
+  };
+  var ANCHOR_PRICE = {
+    "Claude Code":["$0.2–0.8","$0.5–3","$2–8"],
+    "OpenAI Codex":["$0.2–0.6","$0.5–2","$2–6"],
+    "Cursor":["$0.04–0.08","$0.2–0.4","$0.8–1.6"],
+    "Replit Agent 4":["$0.25–0.75","$2–4","$8–15"],
+    "GitHub Copilot Enterprise":["$0.3–0.8","$0.6–2","$2–6"],
+    "Amazon Q Developer":["$0.15–0.5","$0.3–1","$1–3"],
+    "Gemini Code Assist Enterprise":["$0.35–1","$0.7–2.5","$3–8"],
+
+    "Microsoft 365 Copilot":["$0.4–1","$1–3","$2.5–7"],
+    "ChatGPT Work":["$0.2–0.8","$0.5–2","$1.5–5"],
+    "Claude Cowork + Docs/Slides":["$0.2–0.8","$0.5–2","$1.5–5"],
+    "扣子（Coze）企业版":["¥0.5–1.5","¥1–3","¥2.5–8"],
+    "WPS 灵犀":["¥1–5","¥3–12","¥8–30"],
+    "Google Gemini Enterprise":["$0.4–1","$1–3","$2.5–7"],
+    "钉钉悟空":["¥2–8","¥5–20","¥12–50"],
+    "飞书 aily":["3 积分/次（联网回答）","套餐需登录","企业按合同"],
+    "Notion Enterprise Agents":["$0.2–0.8","$0.5–2","$1.5–5"],
+
+    "Figma（Agent + Weave）":["$0.16–0.5","$0.3–1.0","$1.0–3.5"],
+    "Canva（Design Model）":["$0.075","$0.15","$0.30（估算）"],
+    "Adobe Firefly Boards":["$0.03–0.1","$0.06–0.2","$0.2–0.6"],
+    "Adobe Express for Enterprise":["需登录/商务","需登录/商务","需登录/商务"],
+    "稿定设计 企业版":["商务询价","商务询价","商务询价"],
+    "Pixso 企业版":["商务询价","商务询价","商务询价"],
+
+    "Lovart":["$0.3–1.0","$0.5–1.6","$1–3"],
+    "即梦":["≈ ¥0.5–6（估算）","≈ ¥1–12（估算）","≈ ¥3–24（估算）"],
+    "万镜一刻（阿里云）":["¥3–12","¥5–20","¥10–35"],
+    "腾讯妙境（Miora）":["商务询价","商务询价","商务询价"],
+    "LiblibAI 企业版":["需登录/商务","需登录/商务","需登录/商务"],
+    "阿里云通义万相（企业版）":["$0.636 ≈ ¥4.5","$2.04 ≈ ¥14.6","$3.82 ≈ ¥27.3"]
+  };
+  /* ===== 统一锚点：每类的最小计价单位 ===== */
+  var ANCHOR_MIN = {"编程":"1 次单文件修改","办公":"1 页 PPT","设计":"1 张图 / 1 个页面","画布":"1 秒视频（720P）"};
+  var MIN_PRICE = {
+    "Claude Code":"≈ ¥0.7–2.1 / 次",
+    "OpenAI Codex":"≈ ¥1.4–3.6 / 次",
+    "Cursor":"≈ ¥0.3 / 次",
+    "Replit Agent 4":"≈ ¥1.8 / 次",
+    "GitHub Copilot Enterprise":"≈ ¥2.1 / 次",
+    "Amazon Q Developer":"≈ ¥1.1 / 次",
+    "Gemini Code Assist Enterprise":"≈ ¥2.5 / 次",
+
+    "Microsoft 365 Copilot":"≈ ¥0.6–1.8 / 页",
+    "ChatGPT Work":"≈ ¥0.3–1.2 / 页",
+    "Claude Cowork + Docs/Slides":"≈ ¥0.3–1.2 / 页",
+    "扣子（Coze）企业版":"≈ ¥0.08–0.25 / 页",
+    "WPS 灵犀":"≈ ¥0.25–1.0 / 页",
+    "Google Gemini Enterprise":"≈ ¥0.6–1.8 / 页",
+    "钉钉悟空":"≈ ¥0.4–1.7 / 页",
+    "飞书 aily":"需登录/商务",
+    "Notion Enterprise Agents":"≈ ¥0.3–1.2 / 页",
+
+    "Figma（Agent + Weave）":"≈ ¥0.08–0.6 / 张",
+    "Canva（Design Model）":"≈ ¥0.5 / 张",
+    "Adobe Firefly Boards":"≈ ¥0.2–0.7 / 张",
+    "Adobe Express for Enterprise":"需登录/商务",
+    "稿定设计 企业版":"需商务询价",
+    "Pixso 企业版":"需商务询价",
+
+    "Lovart":"≈ ¥0.4–1.4 / 秒",
+    "即梦":"≈ ¥0.1–1.2 / 秒（估算）",
+    "万镜一刻（阿里云）":"≈ ¥0.6–2.5 / 秒",
+    "腾讯妙境（Miora）":"需商务询价",
+    "LiblibAI 企业版":"需登录/商务",
+    "阿里云通义万相（企业版）":"720P ¥0.91 / 1080P ¥1.82 每秒",
+
+    "Framer":"≈ ¥3–20 / 页",
+    "v0（Vercel）":"≈ ¥2–10 / 页",
+    "Google Stitch":"免费",
+    "Midjourney":"≈ ¥0.36–0.6 / 张",
+    "Adobe Photoshop（生成式填充）":"≈ ¥0.3–1 / 次",
+    "Recraft":"≈ ¥0.09–0.2 / 张",
+
+    "Windsurf":"≈ ¥1.0–2.9 / 次",
+    "Bolt.new":"≈ ¥3–8 / 次",
+    "Gamma":"≈ ¥0.3–1.0 / 页",
+    "Manus":"≈ ¥0.5–2.0 / 页",
+    "Ideogram":"≈ ¥0.2–0.5 / 张",
+    "Krea":"≈ ¥0.2–0.8 / 张"
+  };
+  function minAnchor(d){ return ANCHOR_MIN[d.type] || d.anchor || "—"; }
+  function minPrice(d){ return MIN_PRICE[d.name] || "—"; }
+
+  /* ===== 实用大类：按产品实际用途归类，用于排序与分组 ===== */
+  var CAT_ORDER = ["代码开发","办公文档","通用工作台","前端设计","图像设计","视频生成"];
+  var PRACT_CAT = {
+    "Claude Code":"代码开发","OpenAI Codex":"代码开发","Cursor":"代码开发","Replit Agent 4":"代码开发",
+    "Microsoft 365 Copilot":"办公文档","Claude Cowork + Docs/Slides":"办公文档","WPS 灵犀":"办公文档",
+    "ChatGPT Work":"通用工作台","扣子（Coze）企业版":"通用工作台",
+    "Figma（Agent + Weave）":"前端设计","Framer":"前端设计","v0（Vercel）":"前端设计","Google Stitch":"前端设计",
+    "Canva（Design Model）":"图像设计","Adobe Firefly Boards":"图像设计","Lovart":"图像设计",
+    "Midjourney":"图像设计","Adobe Photoshop（生成式填充）":"图像设计","Recraft":"图像设计",
+    "即梦":"视频生成","万镜一刻（阿里云）":"视频生成","腾讯妙境（Miora）":"视频生成"
+  };
+  function practCat(d){ return (d.cat && d.cat.trim()) || PRACT_CAT[d.name] || "其他"; }
+
+  function tier3(d){
+    var arr = (d.tiers3 && d.tiers3.length) ? d.tiers3 : (ANCHOR_PRICE[d.name] || []);
+    if(!arr.length) return '<span class="k">—</span>';
+    var marks = ["①","②","③","④"];
+    return "<ul>" + arr.map(function(x, i){
+      return "<li>" + (marks[i] || "·") + " " + esc(x) + "</li>";
+    }).join("") + "</ul>";
+  }
+
+  /* ===== 客户支付价：把各币种三档价统一折算成人民币（每件交付物） ===== */
+  var PRICE_CNY = {
+    "Claude Code":["¥1.4–5.7","¥3.6–21.5","¥14.3–57.2"],
+    "OpenAI Codex":["¥1.4–4.3","¥3.6–14.3","¥14.3–42.9"],
+    "Cursor":["¥0.3–0.6","¥1.4–2.9","¥5.7–11.4"],
+    "Replit Agent 4":["¥1.8–5.4","¥14.3–28.6","¥57.2–107.3"],
+    "GitHub Copilot Enterprise":["¥2.1–5.7","¥4.3–14.3","¥14.3–42.9"],
+    "Amazon Q Developer":["¥1.1–3.6","¥2.1–7.2","¥7.2–21.5"],
+    "Gemini Code Assist Enterprise":["¥2.5–7.2","¥5.0–17.9","¥21.5–57.2"],
+
+    "Microsoft 365 Copilot":["¥2.9–7.2","¥7.2–21.5","¥17.9–50.1"],
+    "ChatGPT Work":["¥1.4–5.7","¥3.6–14.3","¥10.7–35.8"],
+    "Claude Cowork + Docs/Slides":["¥1.4–5.7","¥3.6–14.3","¥10.7–35.8"],
+    "扣子（Coze）企业版":["¥0.5–1.5","¥1–3","¥2.5–8"],
+    "WPS 灵犀":["¥1–5","¥3–12","¥8–30"],
+    "Google Gemini Enterprise":["¥2.9–7.2","¥7.2–21.5","¥17.9–50.1"],
+    "钉钉悟空":["¥2–8","¥5–20","¥12–50"],
+    "飞书 aily":["需登录/商务"],
+    "Notion Enterprise Agents":["¥1.4–5.7","¥3.6–14.3","¥10.7–35.8"],
+
+    "Figma（Agent + Weave）":["¥1.1–3.6","¥2.1–7.2","¥7.2–25.0"],
+    "Canva（Design Model）":["¥0.5","¥1.1","¥2.1"],
+    "Adobe Firefly Boards":["¥0.2–0.7","¥0.4–1.4","¥1.4–4.3"],
+    "Adobe Express for Enterprise":["需登录/商务"],
+    "稿定设计 企业版":["需商务询价"],
+    "Pixso 企业版":["需商务询价"],
+
+    "Lovart":["¥2.1–7.2","¥3.6–11.4","¥7.2–21.5"],
+    "即梦":["≈ ¥0.5–6","≈ ¥1–12","≈ ¥3–24"],
+    "万镜一刻（阿里云）":["¥3–12","¥5–20","¥10–35"],
+    "腾讯妙境（Miora）":["需商务询价"],
+    "LiblibAI 企业版":["需登录/商务"],
+    "阿里云通义万相（企业版）":["¥4.5","¥14.6","¥27.3"]
+  };
+  function priceCNY(d){
+    var a = (d.price_cny && d.price_cny.length) ? d.price_cny : (PRICE_CNY[d.name] || []);
+    if(!a.length) return '<span class="k">—</span>';
+    var marks = ["①","②","③"];
+    return "<ul>" + a.map(function(x, i){
+      return "<li>" + (marks[i] || "·") + " " + esc(x) + "</li>";
+    }).join("") + "</ul>";
+  }
+
+  var tbody = document.getElementById("tbody");
+  var countEl = document.getElementById("count");
+  var qEl = document.getElementById("q");
+  var typeEl = document.getElementById("typeFilter");
+  var mask = document.getElementById("mask");
+  var mTitle = document.getElementById("mTitle");
+  var errEl = document.getElementById("err");
+  var editingId = null;
+  var diffItems = [];
+  var syncing = false;
+
+  var F = {
+    type: document.getElementById("fType"), cat: document.getElementById("fCat"), name: document.getElementById("fName"), pos: document.getElementById("fPos"),
+    features: document.getElementById("fFeatures"), pros: document.getElementById("fPros"), cons: document.getElementById("fCons"),
+    buzz: document.getElementById("fBuzz"),
+    price: document.getElementById("fPrice"), anchor: document.getElementById("fAnchor"), anchorDesc: document.getElementById("fAnchorDesc"),
+    unit: document.getElementById("fUnit"), basis: document.getElementById("fBasis")
+  };
+
+  function clone(o){ return JSON.parse(JSON.stringify(o)); }
+  function uid(){ return "p" + Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
+  function esc(s){
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){
+      return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];
+    });
+  }
+  function toList(arr){
+    if(!arr || !arr.length) return '<span class="k">—</span>';
+    return "<ul>" + arr.map(function(x){ return "<li>" + esc(x) + "</li>"; }).join("") + "</ul>";
+  }
+  function toLines(arr){
+    if(!arr || !arr.length) return '<span class="k">—</span>';
+    return arr.map(esc).join("<br>");
+  }
+  function today(){ return new Date().toISOString().slice(0,10); }
+  function daysSince(iso){
+    if(!iso) return 9999;
+    var d = new Date(iso + "T00:00:00");
+    return Math.floor((Date.now() - d.getTime()) / 86400000);
+  }
+
+  /* ================= 分类（类型） ================= */
+  var KNOWN = {"编程":"b-code","办公":"b-office","设计":"b-design","画布":"b-canvas"};
+  function typeBadge(t){
+    t = t || "其他";
+    var cls = KNOWN[t];
+    if(cls) return '<span class="badge ' + cls + '">' + esc(t) + '</span>';
+    var h = 0;
+    for(var i=0;i<t.length;i++){ h = (h * 31 + t.charCodeAt(i)) % 360; }
+    return '<span class="badge" style="background:hsl(' + h + ',60%,42%)">' + esc(t) + '</span>';
+  }
+  function allTypes(){
+    var seen = {}, out = [];
+    function add(t){ if(t && !seen[t]){ seen[t] = 1; out.push(t); } }
+    typeRegistry.forEach(add);
+    data.forEach(function(d){ add(d.type || "其他"); });
+    return out;
+  }
+  function loadTypes(){
+    try{
+      var arr = JSON.parse(localStorage.getItem(TYPES_KEY) || "[]");
+      if(!Array.isArray(arr)) return [];
+      return arr.filter(function(x){ return typeof x === "string" && x.trim(); });
+    }catch(e){ return []; }
+  }
+  function saveTypes(){ try{ localStorage.setItem(TYPES_KEY, JSON.stringify(typeRegistry)); }catch(e){} }
+  var typeRegistry = loadTypes();
+  function addType(name){
+    var t = String(name || "").trim();
+    if(!t) return false;
+    if(allTypes().indexOf(t) > -1) return false;
+    typeRegistry.push(t);
+    saveTypes();
+    return true;
+  }
+  function rebuildTypeFilter(){
+    var cur = typeEl.value;
+    var types = allTypes();
+    typeEl.innerHTML = '<option value="">全部类型</option>' +
+      types.map(function(t){ return '<option value="' + esc(t) + '">' + esc(t) + '</option>'; }).join("");
+    typeEl.value = types.indexOf(cur) > -1 ? cur : "";
+  }
+  function populateTypeList(){
+    var el = document.getElementById("typeList");
+    if(!el) return;
+    el.innerHTML = allTypes().map(function(t){ return '<option value="' + esc(t) + '">'; }).join("");
+  }
+  function openTypeMgr(){
+    renderTypeMgr();
+    var el = document.getElementById("newTypeInput");
+    if(el) el.value = "";
+    document.getElementById("typeMask").classList.add("open");
+  }
+  function renderTypeMgr(){
+    var counts = {};
+    data.forEach(function(d){ var t = d.type || "其他"; counts[t] = (counts[t]||0) + 1; });
+    var types = allTypes();
+    var box = document.getElementById("typeListBox");
+    if(!types.length){ box.innerHTML = '<p class="k">暂无分类</p>'; return; }
+    box.innerHTML = types.map(function(t){
+      return '<div style="display:flex;gap:8px;align-items:center;margin-bottom:8px">' +
+        '<span style="flex:0 0 84px">' + typeBadge(t) + '</span>' +
+        '<span style="flex:0 0 56px;color:#98a2b3;font-size:12px">' + (counts[t] || 0) + ' 个</span>' +
+        '<input class="tinput" data-old="' + esc(t) + '" value="' + esc(t) + '" style="flex:1;min-width:80px;border:1px solid var(--line);border-radius:7px;padding:5px 8px;font-size:13px">' +
+        '<button class="btn" data-tact="rename" data-old="' + esc(t) + '" style="padding:4px 9px;font-size:12px">重命名</button>' +
+        '<button class="btn danger-text" data-tact="deltype" data-old="' + esc(t) + '" style="padding:4px 9px;font-size:12px">删除</button>' +
+      '</div>';
+    }).join("");
+  }
+  function findTypeInput(oldName){
+    var list = [].slice.call(document.querySelectorAll(".tinput"));
+    for(var i=0;i<list.length;i++){ if(list[i].getAttribute("data-old") === oldName) return list[i]; }
+    return null;
+  }
+  function renameType(oldName){
+    var input = findTypeInput(oldName);
+    var nv = input ? String(input.value || "").trim() : "";
+    if(!nv || nv === oldName) return;
+    data.forEach(function(d){ if((d.type || "其他") === oldName) d.type = nv; });
+    typeRegistry = typeRegistry.map(function(t){ return t === oldName ? nv : t; });
+    saveTypes();
+    save(); render(); renderTypeMgr();
+  }
+  function deleteType(oldName){
+    var cnt = data.filter(function(d){ return (d.type || "其他") === oldName; }).length;
+    if(oldName === "其他"){
+      if(!confirm("删除分类「其他」及其中 " + cnt + " 个产品？")) return;
+      data = data.filter(function(d){ return (d.type || "其他") !== oldName; });
+    }else{
+      if(!confirm("删除分类「" + oldName + "」？其中 " + cnt + " 个产品将归入「其他」。")) return;
+      data.forEach(function(d){ if((d.type || "其他") === oldName) d.type = "其他"; });
+    }
+    typeRegistry = typeRegistry.filter(function(t){ return t !== oldName; });
+    saveTypes();
+    save(); render(); renderTypeMgr();
+  }
+
+  function load(){
+    try{
+      var raw = localStorage.getItem(STORE_KEY);
+      if(!raw) return visibleDefaults();
+      var parsed = JSON.parse(raw);
+      if(!Array.isArray(parsed) || !parsed.length) return visibleDefaults();
+      return parsed.filter(function(d){ return HIDDEN_NAMES.indexOf(d.name) < 0; });
+    }catch(e){ return visibleDefaults(); }
+  }
+  function save(){ try{ localStorage.setItem(STORE_KEY, JSON.stringify(data)); }catch(e){} }
+  var data = load();
+  data.forEach(function(d){ if(!d.id) d.id = uid(); if(!d.type) d.type = "其他"; });
+  if(!typeRegistry.length){
+    var seed = ["编程","办公","设计","画布"];
+    data.forEach(function(d){ if(seed.indexOf(d.type) < 0) seed.push(d.type); });
+    typeRegistry = seed;
+    saveTypes();
+  }
+
+  // 数据版本迁移：新增的企业版产品自动补入已有本地数据，不覆盖用户修改
+  var DATA_VER = "7";
+  var REMOVED_ENT = ["GitHub Copilot Enterprise","Amazon Q Developer","Gemini Code Assist Enterprise","Google Gemini Enterprise","钉钉悟空","飞书 aily","Notion Enterprise Agents","Adobe Express for Enterprise","稿定设计 企业版","Pixso 企业版","LiblibAI 企业版","阿里云通义万相（企业版）"];
+  (function migrateData(){
+    var v = null;
+    try{ v = localStorage.getItem("agent-data-ver"); }catch(e){}
+    if(v === DATA_VER) return;
+    data = data.filter(function(d){ return REMOVED_ENT.indexOf(d.name) < 0 && HIDDEN_NAMES.indexOf(d.name) < 0; });
+    visibleDefaults().forEach(function(d){
+      var exists = data.some(function(x){ return x.name === d.name; });
+      if(!exists){ var c = clone(d); c.id = uid(); if(!c.updatedAt) c.updatedAt = "2026-11-01"; data.push(c); }
+    });
+    try{ localStorage.setItem("agent-data-ver", DATA_VER); }catch(e){}
+    save();
+  })();
+
+  var settings = (function(){
+    var def = {mode:"llm", searchKey:"", queryTpl:"{name} 价格 2026 定价", llmBase:"https://api.deepseek.com/v1",
+      llmModel:"deepseek-chat", llmKey:"", sourceUrl:"", scope:"filtered", staleDays:90};
+    try{
+      var s = JSON.parse(localStorage.getItem(SET_KEY) || "{}");
+      return Object.assign(def, s || {});
+    }catch(e){ return def; }
+  })();
+  function saveSettings(){ try{ localStorage.setItem(SET_KEY, JSON.stringify(settings)); }catch(e){} }
+
+  function matches(d, q, t){
+    if(t && d.type !== t) return false;
+    if(!q) return true;
+    var hay = [d.type,d.name,d.pos,d.anchor,d.anchorDesc,d.unit,d.basis]
+      .concat(d.features||[], d.pros||[], d.cons||[], d.price||[]).join(" ").toLowerCase();
+    return hay.indexOf(q) > -1;
+  }
+  function currentRows(){
+    var q = (qEl.value || "").trim().toLowerCase();
+    var t = typeEl.value;
+    return data.filter(function(d){ return matches(d, q, t); });
+  }
+
+  function rowHTML(d){
+    var stale = daysSince(d.updatedAt) > settings.staleDays;
+    var at = ANCHOR_TIERS[d.type];
+    return '<tr data-id="' + d.id + '">' +
+      '<td>' + typeBadge(d.type) + '</td>' +
+      '<td><span class="cat">' + esc(practCat(d)) + '</span></td>' +
+      '<td><span class="prod">' + esc(d.name) + '</span>' + (d.pos ? '<span class="pos">' + esc(d.pos) + '</span>' : '') +
+        (d.updatedAt ? '<span class="upd' + (stale ? ' stale' : '') + '">更新于 ' + esc(d.updatedAt.slice(5)) + '</span>' : '') + '</td>' +
+      '<td>' + toList(d.features) + '</td>' +
+      '<td>' + toList(d.pros) + '</td>' +
+      '<td>' + toList(d.cons) + '</td>' +
+      '<td><span class="buzz">' + esc(buzz(d)) + '</span></td>' +
+      '<td class="price">' + toLines(d.price) + '</td>' +
+      '<td title="' + esc(at ? at.join("；") : "") + '"><span class="anchor">' + esc(minAnchor(d)) + '</span>' +
+        '<span class="basis">' + esc(minPrice(d)) + '</span></td>' +
+      '<td>' + (d.basis ? esc(d.basis) : '<span class="k">—</span>') + '</td>' +
+      '<td class="ops">' +
+        '<button class="btn" data-act="edit" data-id="' + d.id + '" style="padding:4px 9px;font-size:12px">编辑</button> ' +
+        '<button class="btn danger-text" data-act="del" data-id="' + d.id + '" style="padding:4px 9px;font-size:12px;margin-left:4px">删除</button>' +
+      '</td></tr>';
+  }
+
+  function render(){
+    rebuildTypeFilter();
+    var rows = currentRows();
+    rows.sort(function(a, b){
+      var ia = CAT_ORDER.indexOf(practCat(a)); if(ia < 0) ia = 99;
+      var ib = CAT_ORDER.indexOf(practCat(b)); if(ib < 0) ib = 99;
+      return ia - ib;
+    });
+    tbody.innerHTML = rows.length ? rows.map(rowHTML).join("") :
+      '<tr><td colspan="11" class="empty">没有匹配的记录，可调整查询条件或点“新增产品”</td></tr>';
+    countEl.textContent = "显示 " + rows.length + " / 共 " + data.length + " 条";
+    var stale = data.filter(function(d){ return daysSince(d.updatedAt) > settings.staleDays; }).length;
+    document.getElementById("staleInfo").textContent = stale ? (stale + " 个产品超过 " + settings.staleDays + " 天未更新") : "全部在有效期内";
+    var last = localStorage.getItem("agent-last-sync") || "";
+    document.getElementById("lastSync").innerHTML = last
+      ? '<span class="dot"></span>上次同步：' + esc(last)
+      : '<span class="dot old"></span>尚未同步';
+  }
+
+  /* ================= 增删改 ================= */
+  function openModal(id){
+    editingId = id || null; errEl.style.display = "none";
+    populateTypeList();
+    if(editingId){
+      var d = data.filter(function(x){ return x.id === editingId; })[0];
+      mTitle.textContent = "编辑：" + d.name;
+      F.type.value = d.type; F.cat.value = (d.cat || PRACT_CAT[d.name] || ""); F.name.value = d.name || ""; F.pos.value = d.pos || "";
+      F.features.value = (d.features||[]).join("\n"); F.pros.value = (d.pros||[]).join("\n");
+      F.cons.value = (d.cons||[]).join("\n"); F.price.value = (d.price||[]).join("\n");
+      F.buzz.value = d.buzz || BUZZ[d.name] || "";
+      F.anchor.value = d.anchor || ""; F.anchorDesc.value = d.anchorDesc || "";
+      F.unit.value = d.unit || ""; F.basis.value = d.basis || "";
+    }else{
+      mTitle.textContent = "新增产品";
+      F.type.value = typeEl.value || ""; F.cat.value = ""; F.name.value = ""; F.pos.value = "";
+      F.features.value = ""; F.pros.value = ""; F.cons.value = ""; F.price.value = ""; F.buzz.value = "";
+      F.anchor.value = ""; F.anchorDesc.value = ""; F.unit.value = ""; F.basis.value = "";
+    }
+    mask.classList.add("open");
+    setTimeout(function(){ F.name.focus(); }, 30);
+  }
+  function closeModal(){ mask.classList.remove("open"); editingId = null; }
+  function splitLines(v){ return (v||"").split("\n").map(function(s){ return s.trim(); }).filter(Boolean); }
+
+  function saveModal(){
+    var name = F.name.value.trim();
+    if(!name){ errEl.style.display = "block"; F.name.focus(); return; }
+    var obj = { type:(F.type.value || "").trim() || "其他", cat:(F.cat.value || "").trim(), name:name, pos:F.pos.value.trim(),
+      features:splitLines(F.features.value), pros:splitLines(F.pros.value), cons:splitLines(F.cons.value),
+      price:splitLines(F.price.value), anchor:F.anchor.value.trim(), anchorDesc:F.anchorDesc.value.trim(),
+      unit:F.unit.value.trim(), basis:F.basis.value.trim(), buzz:F.buzz.value.trim(), updatedAt: today() };
+    if(editingId){ data = data.map(function(d){ return d.id === editingId ? Object.assign(d, obj) : d; }); }
+    else { obj.id = uid(); data.push(obj); }
+    if(obj.type && typeRegistry.indexOf(obj.type) < 0){ typeRegistry.push(obj.type); saveTypes(); }
+    save(); closeModal(); render();
+  }
+  function del(id){
+    var d = data.filter(function(x){ return x.id === id; })[0]; if(!d) return;
+    if(!confirm("确定删除「" + d.name + "」？")) return;
+    data = data.filter(function(x){ return x.id !== id; }); save(); render();
+  }
+
+  /* ================= 同步 ================= */
+  function openSync(){
+    document.querySelector('input[name=syncMode][value="' + settings.mode + '"]').checked = true;
+    document.getElementById("sSearchKey").value = settings.searchKey || "";
+    document.getElementById("sQueryTpl").value = settings.queryTpl || "{name} 价格 2026 定价";
+    document.getElementById("sLlmBase").value = settings.llmBase || "";
+    document.getElementById("sLlmModel").value = settings.llmModel || "";
+    document.getElementById("sLlmKey").value = settings.llmKey || "";
+    document.getElementById("sSourceUrl").value = settings.sourceUrl || "";
+    document.getElementById("sScope").value = settings.scope || "filtered";
+    document.getElementById("sStale").value = settings.staleDays || 90;
+    document.getElementById("syncLog").style.display = "none";
+    document.getElementById("syncMsg").textContent = "";
+    syncMask.classList.add("open");
+  }
+  function closeSync(){ syncMask.classList.remove("open"); }
+  function toggleCfg(){
+    var m = document.querySelector('input[name=syncMode]:checked').value;
+    document.getElementById("cfgLlm").style.display = (m === "llm") ? "" : "none";
+    document.getElementById("cfgUrl").style.display = (m === "url") ? "" : "none";
+  }
+  function log(msg){
+    var el = document.getElementById("syncLog");
+    el.style.display = "block";
+    el.textContent += (el.textContent ? "\n" : "") + msg;
+    el.scrollTop = el.scrollHeight;
+  }
+  function readSettings(){
+    settings.mode = document.querySelector('input[name=syncMode]:checked').value;
+    settings.searchKey = document.getElementById("sSearchKey").value.trim();
+    settings.queryTpl = document.getElementById("sQueryTpl").value.trim() || "{name} 价格 2026 定价";
+    settings.llmBase = document.getElementById("sLlmBase").value.trim().replace(/\/$/, "");
+    settings.llmModel = document.getElementById("sLlmModel").value.trim();
+    settings.llmKey = document.getElementById("sLlmKey").value.trim();
+    settings.sourceUrl = document.getElementById("sSourceUrl").value.trim();
+    settings.scope = document.getElementById("sScope").value;
+    settings.staleDays = Math.max(1, parseInt(document.getElementById("sStale").value, 10) || 90);
+    saveSettings();
+  }
+
+  function fetchJSON(url, opts, ms){
+    var ctl = new AbortController();
+    var timer = setTimeout(function(){ ctl.abort(); }, ms || 30000);
+    return fetch(url, Object.assign({signal: ctl.signal}, opts || {}))
+      .finally(function(){ clearTimeout(timer); });
+  }
+
+  async function tavilySearch(query){
+    var body = {api_key: settings.searchKey, query: query, search_depth: "basic", max_results: 3, include_answer: false};
+    var r = await fetchJSON("https://api.tavily.com/search", {
+      method: "POST", headers: {"Content-Type":"application/json"}, body: JSON.stringify(body)
+    });
+    if(!r.ok) throw new Error("搜索接口 " + r.status);
+    var j = await r.json();
+    var out = (j.results || []).map(function(x){ return "- " + (x.title||"") + "：" + (x.content||"").slice(0,300) + " (" + (x.url||"") + ")"; });
+    if(j.answer) out.unshift("摘要：" + j.answer);
+    return out.join("\n");
+  }
+
+  function extractJSON(text){
+    if(!text) return null;
+    var t = text.replace(/```json/gi, "").replace(/```/g, "").trim();
+    var i = t.indexOf("{"), j = t.lastIndexOf("}");
+    if(i < 0 || j < 0) return null;
+    try{ return JSON.parse(t.slice(i, j+1)); }catch(e){ return null; }
+  }
+
+  async function llmUpdate(d, context){
+    var prompt = "你是市场研究员。请基于公开信息更新下面这个 AI 产品的价格与交付信息。\n" +
+      "产品：" + d.name + "（" + d.type + "类，" + (d.pos||"") + "）\n" +
+      "当前价格：" + (d.price||[]).join(" / ") + "\n" +
+      "当前锚点单价：" + d.unit + "\n" +
+      (context ? ("参考搜索结果：\n" + context + "\n") : "（无联网结果，请基于你已知的公开信息判断）\n") +
+      "要求：只输出 JSON，不要解释。格式：{\"price\":[\"档位1\",\"档位2\"],\"unit\":\"锚点单价\",\"basis\":\"一句话依据\",\"note\":\"变更说明与来源\"}；" +
+      "若价格与当前一致，输出 {}。";
+    var r = await fetchJSON(settings.llmBase + "/chat/completions", {
+      method: "POST",
+      headers: {"Content-Type":"application/json", "Authorization":"Bearer " + settings.llmKey},
+      body: JSON.stringify({
+        model: settings.llmModel, temperature: 0.2,
+        messages: [{role:"system", content:"你是严谨的竞品价格研究员，只输出 JSON。"}, {role:"user", content: prompt}]
+      })
+    }, 45000);
+    if(!r.ok) throw new Error("LLM 接口 " + r.status);
+    var j = await r.json();
+    var text = j.choices && j.choices[0] && j.choices[0].message ? j.choices[0].message.content : "";
+    return extractJSON(text);
+  }
+
+  function pushProposal(d, upd){
+    if(!upd || typeof upd !== "object" || !Object.keys(upd).length) return;
+    var newPrice = Array.isArray(upd.price) ? upd.price.map(String).filter(Boolean) : null;
+    var newUnit = typeof upd.unit === "string" ? upd.unit : null;
+    var changePrice = newPrice && newPrice.join("|") !== (d.price||[]).join("|");
+    var changeUnit = newUnit && newUnit !== d.unit;
+    if(!changePrice && !changeUnit) return;
+    diffItems.push({
+      id: d.id, name: d.name, oldPrice: (d.price||[]).join(" / "), newPrice: newPrice ? newPrice.join(" / ") : "",
+      oldUnit: d.unit, newUnit: newUnit || "", basis: upd.basis || "", note: upd.note || "",
+      price: newPrice, unit: newUnit, check: true
+    });
+  }
+
+  async function runSync(){
+    if(syncing) return;
+    readSettings();
+    syncing = true;
+    diffItems = [];
+    var runBtn = document.getElementById("syncRun");
+    runBtn.disabled = true;
+    document.getElementById("syncMsg").textContent = "同步中…";
+    var targets = settings.scope === "all" ? data.slice() : currentRows();
+    try{
+      if(settings.mode === "demo"){
+        if(!targets.length){ document.getElementById("syncMsg").textContent = "没有可同步的产品，请调整筛选或范围"; return; }
+        document.getElementById("syncLog").style.display = "block";
+        document.getElementById("syncLog").textContent = "演示模式：不发送任何网络请求，用样例展示确认流程。\n";
+        targets.slice(0, 3).forEach(function(d){
+          pushProposal(d, {price: (d.price||[]).map(function(p){ return p; }), unit: d.unit, basis: "演示：未调用真实数据源", note: "演示模式样例，请勿据此决策"});
+        });
+        if(!diffItems.length){
+          diffItems.push({id: targets[0].id, name: targets[0].name, oldPrice:(targets[0].price||[]).join(" / "),
+            newPrice:(targets[0].price||[]).join(" / ") + "（演示）", oldUnit: targets[0].unit, newUnit: targets[0].unit,
+            basis:"演示", note:"演示模式：展示审批流程", price:(targets[0].price||[]).concat("演示档"), unit: targets[0].unit, check:true});
+        }
+        document.getElementById("syncMsg").textContent = "演示完成，请确认变更";
+        showDiff();
+        return;
+      }
+
+      if(settings.mode === "url"){
+        if(!settings.sourceUrl) throw new Error("请填写数据源 URL");
+        log("拉取数据源：" + settings.sourceUrl);
+        var r = await fetchJSON(settings.sourceUrl, {method:"GET"}, 30000);
+        if(!r.ok) throw new Error("数据源 " + r.status);
+        var j = await r.json();
+        var arr = Array.isArray(j) ? j : (j.updates || []);
+        arr.forEach(function(u){
+          if(!u || !u.name) return;
+          var d = targets.filter(function(x){ return x.name === u.name || x.name.indexOf(u.name) === 0; })[0];
+          if(d) pushProposal(d, {price: u.price, unit: u.unit, basis: u.basis, note: u.note || "数据源更新"});
+        });
+        log("数据源返回 " + arr.length + " 条，匹配到 " + diffItems.length + " 条变更");
+        document.getElementById("syncMsg").textContent = diffItems.length ? "请确认变更" : "数据源无匹配变更";
+        if(diffItems.length) showDiff();
+        return;
+      }
+
+      // llm 模式
+      if(!settings.llmKey) throw new Error("请填写 LLM API Key（或改用演示模式）");
+      if(!settings.llmBase || !settings.llmModel) throw new Error("请填写 LLM Base URL 与模型名");
+      var done = 0, fail = 0;
+      for(var i=0; i<targets.length; i++){
+        var d = targets[i];
+        try{
+          log("[" + (i+1) + "/" + targets.length + "] " + d.name + " …");
+          var ctx = "";
+          if(settings.searchKey){
+            try{ ctx = await tavilySearch(settings.queryTpl.replace("{name}", d.name)); log("  搜索到 " + (ctx ? ctx.split("\n").length : 0) + " 条"); }
+            catch(e){ log("  搜索失败：" + e.message + "（改用模型知识）"); }
+          }
+          var upd = await llmUpdate(d, ctx);
+          pushProposal(d, upd);
+          done++;
+          log("  完成" + (upd && Object.keys(upd).length ? "，有变更" : "，无变更"));
+        }catch(e){ fail++; log("  失败：" + e.message); }
+        await new Promise(function(res){ setTimeout(res, 400); });
+      }
+      document.getElementById("syncMsg").textContent = "完成 " + done + " 个，失败 " + fail + " 个，待确认 " + diffItems.length + " 条";
+      if(diffItems.length) showDiff();
+    }catch(e){
+      document.getElementById("syncMsg").innerHTML = '<span class="err">同步失败：' + esc(e.message) + '</span>';
+      log("错误：" + e.message);
+    }finally{
+      syncing = false;
+      runBtn.disabled = false;
+    }
+  }
+
+  function showDiff(){
+    var body = document.getElementById("diffBody");
+    body.innerHTML = diffItems.map(function(it, idx){
+      return '<tr data-idx="' + idx + '">' +
+        '<td><input type="checkbox" class="dchk" ' + (it.check ? "checked" : "") + ' data-idx="' + idx + '"></td>' +
+        '<td>' + esc(it.name) + '</td>' +
+        '<td><span class="old">' + esc(it.oldPrice || "—") + '</span>' + (it.newPrice ? '<br><span class="new">' + esc(it.newPrice) + '</span>' : '<br><span class="k">无变化</span>') + '</td>' +
+        '<td><span class="old">' + esc(it.oldUnit || "—") + '</span>' + (it.newUnit ? '<br><span class="new">' + esc(it.newUnit) + '</span>' : '<br><span class="k">无变化</span>') + '</td>' +
+        '<td>' + esc(it.note || it.basis || "—") + '</td>' +
+      '</tr>';
+    }).join("");
+    diffMask.classList.add("open");
+  }
+  function applyDiff(){
+    var chosen = [].slice.call(document.querySelectorAll(".dchk")).filter(function(c){ return c.checked; })
+      .map(function(c){ return diffItems[parseInt(c.getAttribute("data-idx"), 10)]; });
+    if(!chosen.length){ diffMask.classList.remove("open"); return; }
+    chosen.forEach(function(it){
+      var d = data.filter(function(x){ return x.id === it.id; })[0];
+      if(!d) return;
+      if(it.price && it.price.length) d.price = it.price;
+      if(it.unit) d.unit = it.unit;
+      if(it.basis) d.basis = it.basis;
+      d.updatedAt = today();
+    });
+    save(); render();
+    try{ localStorage.setItem("agent-last-sync", new Date().toLocaleString("zh-CN", {hour12:false})); }catch(e){}
+    diffMask.classList.remove("open");
+    closeSync();
+    render();
+  }
+
+  /* ================= 导出 ================= */
+  function exportCSV(){
+    var head = ["类型","实用大类","产品","定位","核心功能","优点","缺点","用户口碑","价格","统一锚点","依据","更新于"];
+    var q = function(v){ return '"' + String(v == null ? "" : v).replace(/"/g, '""') + '"'; };
+    var lines = [head.map(q).join(",")];
+    data.forEach(function(d){
+      lines.push([d.type,practCat(d),d.name,d.pos,(d.features||[]).join("；"),(d.pros||[]).join("；"),
+        (d.cons||[]).join("；"),buzz(d),(d.price||[]).join(" / "),d.anchor,d.basis,d.updatedAt||""].map(q).join(","));
+    });
+    var blob = new Blob(["\uFEFF" + lines.join("\r\n")], {type:"text/csv;charset=utf-8"});
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob); a.download = "agent-products.csv";
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function(){ URL.revokeObjectURL(a.href); }, 1000);
+  }
+
+  /* ================= 事件 ================= */
+  var syncMask = document.getElementById("syncMask");
+  var diffMask = document.getElementById("diffMask");
+  var typeMask = document.getElementById("typeMask");
+
+  tbody.addEventListener("click", function(e){
+    var btn = e.target.closest("button[data-act]"); if(!btn) return;
+    var id = btn.getAttribute("data-id");
+    if(btn.getAttribute("data-act") === "edit") openModal(id); else del(id);
+  });
+  document.getElementById("addBtn").addEventListener("click", function(){ openModal(null); });
+  document.getElementById("saveBtn").addEventListener("click", saveModal);
+  document.getElementById("cancelBtn").addEventListener("click", closeModal);
+  document.getElementById("csvBtn").addEventListener("click", exportCSV);
+  document.getElementById("resetBtn").addEventListener("click", function(){
+    if(!confirm("恢复为默认 16 条数据？当前所有修改将被清除。")) return;
+    data = visibleDefaults().map(function(d){ d.id = uid(); return d; });
+    typeRegistry = ["编程","办公","设计","画布"];
+    saveTypes();
+    save(); render();
+  });
+  document.getElementById("syncBtn").addEventListener("click", openSync);
+  document.getElementById("typeMgrBtn").addEventListener("click", openTypeMgr);
+  document.getElementById("typeClose").addEventListener("click", function(){ typeMask.classList.remove("open"); });
+  document.getElementById("typeListBox").addEventListener("click", function(e){
+    var btn = e.target.closest("button[data-tact]"); if(!btn) return;
+    var old = btn.getAttribute("data-old");
+    if(btn.getAttribute("data-tact") === "rename") renameType(old);
+    else deleteType(old);
+  });
+  document.getElementById("addTypeBtn").addEventListener("click", function(){
+    var el = document.getElementById("newTypeInput");
+    var ok = addType(el.value);
+    if(!ok){ alert("分类名为空或已存在"); return; }
+    el.value = "";
+    renderTypeMgr(); render();
+  });
+  document.getElementById("newTypeInput").addEventListener("keydown", function(e){
+    if(e.key === "Enter"){ e.preventDefault(); document.getElementById("addTypeBtn").click(); }
+  });
+  document.getElementById("syncClose").addEventListener("click", closeSync);
+  document.getElementById("syncRun").addEventListener("click", runSync);
+  document.getElementById("diffCancel").addEventListener("click", function(){ diffMask.classList.remove("open"); });
+  document.getElementById("diffApply").addEventListener("click", applyDiff);
+  [].slice.call(document.querySelectorAll('input[name=syncMode]')).forEach(function(r){ r.addEventListener("change", toggleCfg); });
+  qEl.addEventListener("input", render);
+  typeEl.addEventListener("change", render);
+  mask.addEventListener("click", function(e){ if(e.target === mask) closeModal(); });
+  syncMask.addEventListener("click", function(e){ if(e.target === syncMask) closeSync(); });
+  diffMask.addEventListener("click", function(e){ if(e.target === diffMask) diffMask.classList.remove("open"); });
+  typeMask.addEventListener("click", function(e){ if(e.target === typeMask) typeMask.classList.remove("open"); });
+  document.addEventListener("keydown", function(e){
+    if(e.key !== "Escape") return;
+    if(mask.classList.contains("open")) closeModal();
+    if(syncMask.classList.contains("open")) closeSync();
+    if(diffMask.classList.contains("open")) diffMask.classList.remove("open");
+    if(typeMask.classList.contains("open")) typeMask.classList.remove("open");
+  });
+
+  toggleCfg();
+  render();
+  save();
+})();
+</script>
+
+</body>
+</html>
