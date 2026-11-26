@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>四类 Agent 产品总表：编程 / 办公 / 设计 / 画布（2026-11）</title>
+<title>Agent 产品信息表（按应用功能分类，2026-11）</title>
 <style>
   :root{
     --ink:#1a1d23; --muted:#5b6472; --line:#dfe5ee; --bg:#f5f7fb;
@@ -64,6 +64,8 @@
   .cust{font-size:12px;line-height:1.5}
   .cat{font-size:12px;color:#33405a;white-space:nowrap}
   .buzz{font-size:12px;color:#475467;line-height:1.5}
+  .tech{font-size:12px;color:#6941c6}
+  .scene{font-size:12px;color:#0e7490;white-space:nowrap}
   .k{color:#9aa3af}
   .empty{text-align:center;color:var(--muted);padding:30px}
   tfoot td{background:#fff8e6;border-top:2px solid #f3d38a;padding:9px 11px;font-size:12px;color:#5c4708}
@@ -134,6 +136,8 @@
       <tr>
         <th style="min-width:64px">类型</th>
         <th style="min-width:92px">实用大类</th>
+        <th style="min-width:160px">技术底座</th>
+        <th style="min-width:100px">覆盖场景</th>
         <th style="min-width:140px">产品</th>
         <th style="min-width:250px">核心功能</th>
         <th style="min-width:170px">优点</th>
@@ -147,9 +151,9 @@
     </thead>
     <tbody id="tbody"></tbody>
     <tfoot>
-      <tr><td colspan="11"><b>统一锚点（最小单位）：</b>编程＝1 次单文件修改；办公＝1 页 PPT；设计＝1 张图 / 1 个页面；画布＝1 秒视频（720P）。锚点列同时给出该最小单位的折算单价。</td></tr>
-      <tr><td colspan="11"><b>折算口径：</b>积分单价按"订阅价 ÷ 包含积分"计算——Figma $0.0053/credit、Canva $0.03/credit、Lovart $0.013/积分、扣子 ¥0.001/积分、WPS ¥0.06/灵点、万镜 ¥0.1/点；Copilot 一次动作 5 点（≈$0.05）；Cursor 一次请求 $0.04；Replit 一次 checkpoint $0.25 起。汇率 1 USD ≈ 7.15 CNY。</td></tr>
-      <tr><td colspan="11"><b>免责：</b>本表单价均为按订阅价与公开计费规则折算的<b>估算</b>，不是厂商报价。同步结果为搜索引擎/AI 的公开信息摘要，需人工确认后再作为决策依据。数据核对时间：2026 年 11 月。</td></tr>
+      <tr><td colspan="13"><b>统一锚点（最小单位）：</b>通用任务＝1 个任务；编程与建站＝1 个功能点；办公文档与演示＝1 页 PPT；图像生成＝1 张图；设计与品牌＝1 张物料；UI/前端设计＝1 个页面；视频生成＝1 秒视频；短剧创作＝1 秒成片；画布类按产出取「1 张图 / 1 秒成片」。</td></tr>
+      <tr><td colspan="13"><b>折算口径：</b>积分单价按"订阅价 ÷ 包含积分"计算——Figma $0.0053/credit、Canva $0.03/credit、Lovart $0.013/积分、扣子 ¥0.001/积分、WPS ¥0.06/灵点、万镜 ¥0.1/点；Copilot 一次动作 5 点（≈$0.05）；Cursor 一次请求 $0.04；Replit 一次 checkpoint $0.25 起。汇率 1 USD ≈ 7.15 CNY。</td></tr>
+      <tr><td colspan="13"><b>免责：</b>本表单价均为按订阅价与公开计费规则折算的<b>估算</b>，不是厂商报价。同步结果为搜索引擎/AI 的公开信息摘要，需人工确认后再作为决策依据。数据核对时间：2026 年 11 月。</td></tr>
     </tfoot>
   </table>
   </div>
@@ -178,6 +182,14 @@
         <div class="field">
           <label for="fPos">定位（一行）</label>
           <input id="fPos" placeholder="例如：Anthropic · 终端/IDE 长任务代理">
+        </div>
+        <div class="field">
+          <label for="fTech">技术底座</label>
+          <input id="fTech" placeholder="自研模型 / 自研工程 / 编排套壳">
+        </div>
+        <div class="field">
+          <label for="fScene">覆盖场景（逗号分隔）</label>
+          <input id="fScene" placeholder="图片、视频、短剧">
         </div>
         <div class="field">
           <label for="fUnit">参考单价（同步用，可留空）</label>
@@ -320,9 +332,9 @@
 (function(){
   "use strict";
 
-  var STORE_KEY = "agent-products-v1";
-  var SET_KEY = "agent-settings-v1";
-  var TYPES_KEY = "agent-types-v1";
+  var STORE_KEY = "agent-products-v7";
+  var SET_KEY = "agent-settings-v7";
+  var TYPES_KEY = "agent-types-v7";
   var CLS = {"编程":"b-code","办公":"b-office","设计":"b-design","画布":"b-canvas"};
 
   var DEFAULTS = [
@@ -540,8 +552,661 @@
   ];
   DEFAULTS.forEach(function(d){ d.updatedAt = "2026-11-01"; });
 
+  /* ===== 新版数据：按“应用功能”分类，仅收录应用层 Agent（不含模型/API/基础设施） ===== */
+  DEFAULTS = [
+    {type:"通用任务",cat:"通用执行",name:"Manus",pos:"Manus · 通用执行 Agent",
+     features:["端到端完成研究、做表、出 PPT","浏览器操作与文件处理","定时任务 + 多 Agent 协作"],
+     pros:["交付跨度大","适合非结构化任务","可按次试"],cons:["积分消耗快","结果稳定性波动","企业治理弱"],
+     buzz:"惊艳于端到端交付；吐槽积分消耗快、结果不稳",
+     price:["Free 300 credits/日","Pro $20/月","Pro+ $40/月","Team $20/席"],
+     anchor:"1 个任务",anchorDesc:"研究→成稿的完整任务",unit:"≈ ¥2–8 / 任务",basis:"按 Pro 档均摊：每月 20–40 个任务"},
+    {type:"通用任务",cat:"通用执行",name:"Genspark",pos:"Genspark · 超级 Agent",
+     features:["一次生成表格/幻灯片/文档","多模型路由","深度研究与 AI Sheets"],
+     pros:["产物形态全","出稿快","价格中等"],cons:["深度编辑弱","治理弱","积分制"],
+     buzz:"出稿快被认可；吐槽产物需要二次加工",
+     price:["Plus $24.99/月（年付 $19.99）","Pro $249.99/月","Team $30/席"],
+     anchor:"1 个任务",anchorDesc:"一份可交付产物",unit:"≈ ¥3–12 / 任务",basis:"按 Plus 档均摊"},
+    {type:"通用任务",cat:"智能体搭建",name:"扣子（Coze）",pos:"字节 · 智能体/应用搭建",
+     features:["可视化工作流与技能","一键发布到微信/飞书/网页","知识库与插件生态"],
+     pros:["上手最快","国内可用可开票","插件丰富"],cons:["深度定制弱","积分消耗","企业治理一般"],
+     buzz:"国内上手最快；吐槽积分消耗快",
+     price:["个人免费版（每日积分）","个人进阶版 ≈ ¥34/月","企业标准版 ¥166/月起"],
+     anchor:"1 个任务",anchorDesc:"一次智能体任务",unit:"≈ ¥0.05–0.3 / 任务",basis:"按 ¥0.001/积分折算"},
+    {type:"通用任务",cat:"通用工作台",name:"ChatGPT Work",pos:"OpenAI · 通用工作台",
+     features:["自主拆解并调用外部系统","交付文档/表格/PPT/小应用","定时与触发任务"],
+     pros:["能力上限最高","交付跨度大","体验成熟"],cons:["企业治理浅","格式导出是补丁","提示注入风险"],
+     buzz:"能力被认可；企业用户吐槽格式与治理",
+     price:["Plus $20/月","Business $25/席","Pro $100/月"],
+     anchor:"1 个任务",anchorDesc:"一份可交付产物",unit:"≈ ¥3–14 / 任务",basis:"按 Plus 档均摊"},
+
+    {type:"编程与建站",cat:"IDE Agent",name:"Cursor",pos:"AI 原生 IDE",
+     features:["Tab 补全与多行预测","Agent 跨文件修改","代码库语义索引"],
+     pros:["编辑体验最顺","索引快","模型可选"],cons:["双层计费","大仓库上下文受限","团队治理弱"],
+     buzz:"公认编辑体验最顺；抱怨订阅 + 用量双计费",
+     price:["Hobby 免费","Pro $20/月","Teams $40/席"],
+     anchor:"1 个功能点",anchorDesc:"3–5 文件 / 1 小时",unit:"≈ ¥0.2–0.4 / 功能点",basis:"5–10 次请求 × $0.04"},
+    {type:"编程与建站",cat:"IDE Agent",name:"Windsurf",pos:"Codeium · AI 原生 IDE",
+     features:["Cascade 多步 Agent","IDE 内补全与对话","企业私有部署"],
+     pros:["免费额度大方","Agent 体验接近 Cursor","企业版可私有化"],cons:["插件生态少","复杂重构偶发失控","路线变动较多"],
+     buzz:"好评：免费额度大方、Agent 顺；吐槽插件生态少",
+     price:["Free","Pro $15/月","Teams $30/席","Enterprise $60/席"],
+     anchor:"1 个功能点",anchorDesc:"3–5 文件 / 1 小时",unit:"≈ ¥1.0–2.9 / 功能点",basis:"按 Pro 档均摊"},
+    {type:"编程与建站",cat:"终端 Agent",name:"Claude Code",pos:"Anthropic · 终端/IDE 长任务",
+     features:["读写仓库、跑测试、提 PR","多步子 Agent 并行","MCP 接内部系统"],
+     pros:["长任务最可靠","跨文件推理强","能自主跑测试改代码"],cons:["额度消耗快","企业权限需另配","超大仓库索引弱"],
+     buzz:"口碑最好：长任务稳、改老仓库强；吐槽额度不够用",
+     price:["Pro $20/月","Max $100 / $200","Team $100–125/高级席"],
+     anchor:"1 个功能点",anchorDesc:"3–5 文件 / 1 小时",unit:"≈ ¥0.5–3 / 功能点",basis:"按订阅均摊：每月 30–100 个"},
+    {type:"编程与建站",cat:"云端 IDE",name:"Replit Agent 4",pos:"浏览器 · 画布闭环",
+     features:["无限 Design Canvas","改画布即改代码","一键部署上线"],
+     pros:["产物可运行","闭环最完整","非工程师可用"],cons:["按量无上限","复杂架构可控性弱","产物绑定平台"],
+     buzz:"非工程师好评；投诉集中在按量无上限、账单失控",
+     price:["Core $20/月","Pro $100/月","按 checkpoint 另计"],
+     anchor:"1 个功能点",anchorDesc:"8–15 个 checkpoint",unit:"≈ ¥2–4 / 功能点",basis:"$0.25 起/checkpoint"},
+    {type:"编程与建站",cat:"提示词建站",name:"Bolt.new",pos:"StackBlitz · 提示词出全栈应用",
+     features:["浏览器内生成全栈应用","实时预览与部署","代码可导出"],
+     pros:["几分钟出原型","无需本地环境","不锁定平台"],cons:["复杂项目易失控","按 token 计费波动","企业治理弱"],
+     buzz:"好评：几分钟出全栈原型；差评：复杂项目易失控",
+     price:["Free","Pro $20/月","Teams $30/席"],
+     anchor:"1 个功能点",anchorDesc:"1 个原型/页面",unit:"≈ ¥3–8 / 个",basis:"按 Pro 档均摊"},
+
+    {type:"办公文档与演示",cat:"演示文稿",name:"Gamma",pos:"AI 生成演示文稿与网页",
+     features:["一句话生成整套 PPT","卡片式编辑，可导出 PPT/PDF","网页发布"],
+     pros:["出稿快、审美在线","导出兼容 PowerPoint","非设计师友好"],cons:["复杂版式控制弱","免费额度少","模板同质化"],
+     buzz:"出稿快、审美在线；吐槽模板同质化、导出受限",
+     price:["Free 400 credits","Plus $10/月","Pro $20/月"],
+     anchor:"1 页 PPT",anchorDesc:"标准 16:9 版式",unit:"≈ ¥0.3–1.0 / 页",basis:"Plus 档一份 12 页约 ¥3–12"},
+    {type:"办公文档与演示",cat:"知识库",name:"Notion AI",pos:"Notion · 文档与知识库 Agent",
+     features:["文档内写作与总结","数据库内多步 Agent","连接器与定时任务"],
+     pros:["知识与流程一体","产物可查询","团队协作好"],cons:["PPT/Excel 深度不足","大规模席位成本高","依赖 Notion 作中枢"],
+     buzz:"知识库场景好评；吐槽格式深度与席位成本",
+     price:["Plus $10/席","Business $20/席","Enterprise 定制"],
+     anchor:"1 页 PPT",anchorDesc:"等量文档产出",unit:"≈ ¥0.3–1.0 / 页",basis:"按席位 + credits 均摊"},
+    {type:"办公文档与演示",cat:"中文办公",name:"WPS 灵犀",pos:"金山 · 中文套件同屏",
+     features:["左文档右助手同屏","AIPPT 一键成稿","表格自然语言操作"],
+     pros:["中文排版最贴合","价格低","零迁移"],cons:["灵点消耗快","会员分层复杂","生态弱于微软"],
+     buzz:"中文办公好评；灵点消耗快被集中吐槽",
+     price:["¥48 / ¥128 / ¥398 每月","每月赠 800 灵点"],
+     anchor:"1 页 PPT",anchorDesc:"AIPPT 生成",unit:"≈ ¥0.25–1.0 / 页",basis:"50–200 灵点 × ¥0.06"},
+
+    {type:"图像生成",cat:"出图工具",name:"Midjourney",pos:"Midjourney · 文生图",
+     features:["文生图，风格化突出","图生图 / 局部重绘","风格与角色参考"],
+     pros:["审美天花板","一致性工具成熟","社区生态大"],cons:["可控性弱","无分层编辑","商用条款需注意"],
+     buzz:"审美天花板；吐槽可控性差、无分层",
+     price:["Basic $10/月","Standard $30/月","Pro $60/月","Mega $120/月"],
+     anchor:"1 张图",anchorDesc:"1024×1024 起",unit:"≈ ¥0.36–0.6 / 张",basis:"Basic $10 ÷ 约 200 张"},
+    {type:"图像生成",cat:"出图工具",name:"Ideogram",pos:"文字渲染见长的图像生成",
+     features:["文生图，擅长图内文字","Magic Prompt","风格与比例控制"],
+     pros:["海报文字准确率高","上手简单","价格低"],cons:["风格多样性弱","无分层编辑","企业能力弱"],
+     buzz:"图内文字准；吐槽风格单一",
+     price:["Free 10 张/日","Basic $8/月","Plus $20/月","Pro $60/月"],
+     anchor:"1 张图",anchorDesc:"含图内文字",unit:"≈ ¥0.2–0.5 / 张",basis:"Basic $8 ÷ 约 400 张"},
+    {type:"图像生成",cat:"矢量/品牌",name:"Recraft",pos:"品牌视觉与矢量生成",
+     features:["文生图/矢量图/图标","Brand Style 风格一致","可导出 SVG"],
+     pros:["少见矢量生成","品牌风格统一","导出可用"],cons:["生态小","中文支持一般","高级功能贵"],
+     buzz:"矢量生成独一份；吐槽生态小、中文弱",
+     price:["Free 50 credits/日","Basic $12/月","Advanced $48/月"],
+     anchor:"1 张图",anchorDesc:"含矢量源文件",unit:"≈ ¥0.09–0.2 / 张",basis:"Basic $12 ÷ 约 1,000 credits"},
+    {type:"图像生成",cat:"实时画布",name:"Krea",pos:"实时生成画布",
+     features:["实时画布，边画边生成","图像增强与放大","风格参考"],
+     pros:["交互体验独特","放大质量好","迭代快"],cons:["稳定性一般","档位跨度大","中文支持弱"],
+     buzz:"实时画布惊艳；吐槽稳定性与价格跨度",
+     price:["Free","Basic $10/月","Pro $30/月","Max $60/月"],
+     anchor:"1 张图",anchorDesc:"1024×1024 起",unit:"≈ ¥0.2–0.8 / 张",basis:"按 Basic 档均摊"},
+
+    {type:"设计与品牌",cat:"全民设计",name:"Canva",pos:"模板 + 品牌套件",
+     features:["海量模板与品牌套件","Magic Studio 一键改图","多尺寸自动适配"],
+     pros:["门槛最低","模板生态最大","品牌一致性有保障"],cons:["专业深度不足","风格同质化","免费额度少"],
+     buzz:"小白友好；专业设计师嫌深度不足",
+     price:["Free 50 积分","Pro $15/月","Teams $10/席","Enterprise 定制"],
+     anchor:"1 张物料",anchorDesc:"1080×1080 起",unit:"≈ ¥0.5 / 张",basis:"Pro $15 ÷ 约 200 次"},
+    {type:"设计与品牌",cat:"成套视觉",name:"Lovart",pos:"多 Agent 分工的无限画布",
+     features:["Coco 前台 + 五类设计 Agent handoff","圈注改稿、局部替换","流程沉淀为 Skill"],
+     pros:["端到端成套出图","流程产品化","已规模化"],cons:["毛利低、依赖补贴","一致性靠人工","积分月清零"],
+     buzz:"成套出图好评；吐槽积分月清零、一致性靠人工",
+     price:["Starter $19.93/月","Basic $39.95/月","Pro $89.97/月","Ultimate $159.99/月"],
+     anchor:"1 张物料",anchorDesc:"含 1 次改稿",unit:"≈ ¥1–2.9 / 张",basis:"Starter $19.93 ÷ 1,500 积分"},
+    {type:"设计与品牌",cat:"电商设计",name:"稿定设计",pos:"国内电商与营销设计",
+     features:["中文模板与电商尺寸","批量改图、抠图","团队协作与品牌规范"],
+     pros:["中文电商最贴","价格低","国内访问稳定"],cons:["设计深度弱","AI 生成一般","企业治理偏轻"],
+     buzz:"电商场景好用；吐槽可编辑性与 AI 能力一般",
+     price:["个人年卡约 ¥259","企业版按席位（商务）"],
+     anchor:"1 张物料",anchorDesc:"电商主图/海报",unit:"≈ ¥0.3–1 / 张",basis:"按年卡均摊"},
+
+    {type:"UI/前端设计",cat:"网页设计",name:"Framer",pos:"网站设计 + 发布一体",
+     features:["AI 生成整站/页面","响应式与 CMS","自定义域名与 SEO"],
+     pros:["设计到发布零切换","上线快","模板质量高"],cons:["复杂应用弱","绑定平台","站点数涨价"],
+     buzz:"上线快、模板好；吐槽绑定平台、导出受限",
+     price:["Mini $5/月","Basic $15/月","Pro $30/月"],
+     anchor:"1 个页面",anchorDesc:"响应式落地页",unit:"≈ ¥3–20 / 页",basis:"按订阅均摊：每月 1–5 页"},
+    {type:"UI/前端设计",cat:"界面生成",name:"v0（Vercel）",pos:"提示词生成前端界面",
+     features:["文本/截图生成 React 页面","可迭代修改与组件化","一键部署"],
+     pros:["产物是前端代码","部署链路打通","迭代快"],cons:["设计师门槛高","依赖提示词","按积分计费"],
+     buzz:"前端好评；设计师嫌门槛高",
+     price:["Free","Premium $20/月","Team $30/席"],
+     anchor:"1 个页面",anchorDesc:"可运行页面",unit:"≈ ¥2–10 / 页",basis:"按订阅额度均摊"},
+    {type:"UI/前端设计",cat:"原型设计",name:"Google Stitch",pos:"免费 UI 设计画布",
+     features:["节点式画布：图/代码/PRD 同放","Agent 读整块画布","导出 DESIGN.md"],
+     pros:["完全免费","整块画布上下文强","导出规范"],cons:["协作弱","商业化未定","生态早期"],
+     buzz:"免费好用；吐槽协作与企业能力弱",
+     price:["免费（Google Labs）"],
+     anchor:"1 个页面",anchorDesc:"UI 稿/原型",unit:"免费",basis:"无按页计费"},
+
+    {type:"视频生成",cat:"通用视频",name:"可灵 AI",pos:"快手 · 文生视频",
+     features:["文生视频 / 图生视频","首尾帧与运镜控制","对口型与音效"],
+     pros:["国内视频质量第一梯队","控制能力强","更新快"],cons:["灵感值消耗快","长视频仍需拼接","商用授权需确认"],
+     buzz:"国产视频质量口碑最好；吐槽灵感值烧得快",
+     price:["基础约 ¥66/月","进阶约 ¥266/月","专业约 ¥666/月（官网核对）"],
+     anchor:"1 秒视频",anchorDesc:"720P 输出",unit:"≈ ¥0.3–1 / 秒",basis:"按会员灵感值折算"},
+    {type:"视频生成",cat:"通用视频",name:"Runway",pos:"Gen 系列视频模型",
+     features:["文生视频/图生视频","运镜与关键帧控制","视频编辑与特效"],
+     pros:["专业创作工具链完整","控制精细","生态成熟"],cons:["价格偏高","中文支持一般","生成速度一般"],
+     buzz:"专业创作者首选；吐槽价格与排队",
+     price:["Standard $15/月","Pro $35/月","Unlimited $95/月"],
+     anchor:"1 秒视频",anchorDesc:"1080P 输出",unit:"≈ ¥0.5–2 / 秒",basis:"按 credits 折算"},
+    {type:"视频生成",cat:"创意短片",name:"Pika",pos:"轻量创意视频",
+     features:["文生/图生视频","特效模板（Pikaffects）","快速生成"],
+     pros:["上手快","特效好玩","价格低"],cons:["画质上限一般","长镜头弱","控制项少"],
+     buzz:"玩法多、上手快；吐槽画质与控制力",
+     price:["Free","Standard $8/月","Pro $28/月","Fancy $70/月"],
+     anchor:"1 秒视频",anchorDesc:"720P 输出",unit:"≈ ¥0.3–1.5 / 秒",basis:"按订阅折算"},
+    {type:"视频生成",cat:"社交视频",name:"PixVerse",pos:"面向社交平台的视频生成",
+     features:["文生/图生视频","模板与特效","多比例适配"],
+     pros:["出片快","模板多","价格低"],cons:["一致性弱","长视频弱","企业能力弱"],
+     buzz:"社媒出片快；吐槽一致性与稳定性",
+     price:["Free","Standard $10/月","Pro $30/月","Premium $100/月"],
+     anchor:"1 秒视频",anchorDesc:"720P 输出",unit:"≈ ¥0.2–1 / 秒",basis:"按订阅折算"},
+
+    {type:"短剧创作",cat:"短剧流水线",name:"SkyProduction",pos:"昆仑万维 · AI 短剧生产",
+     features:["剧本→分镜→成片流水线","角色与场景一致性","长视频与本地化"],
+     pros:["按秒计价便宜","短剧流程完整","支持长视频"],cons:["成片仍需人工精修","角色一致性有波动","生态较新"],
+     buzz:"单价低是最大卖点；吐槽成片细节需返工",
+     price:["按秒计费，约 ¥0.4/秒"],
+     anchor:"1 秒成片",anchorDesc:"短剧成片输出",unit:"≈ ¥0.4 / 秒",basis:"官方按秒报价"},
+    {type:"短剧创作",cat:"视频平台",name:"万镜一刻",pos:"阿里云 · 故事板/画布/Agent 三模式",
+     features:["故事板 + 无限画布 + Agent","节点二次编辑","短漫剧/投流模板"],
+     pros:["批量产能稳定","门槛低","云上算力保障"],cons:["创作者生态薄","一致性打磨中","档位价差大"],
+     buzz:"批量出片稳定；吐槽一致性与价格档位跨度",
+     price:["基础版 ¥39/月","标准版 ¥2,999/月","积分包 ¥100/1,000 点"],
+     anchor:"1 秒成片",anchorDesc:"短剧/投流成片",unit:"≈ ¥0.6–2.5 / 秒",basis:"¥0.1/点 × 每条约 50–200 点"},
+    {type:"短剧创作",cat:"剧情视频",name:"海螺 AI",pos:"MiniMax · 视频与剧情生成",
+     features:["文生视频/图生视频","角色与镜头控制","剧情类长片段"],
+     pros:["人物表现力好","中文理解强","价格中等"],cons:["会员档位复杂","一致性偶有漂移","商用需确认"],
+     buzz:"人物表现好评；吐槽会员档位与一致性",
+     price:["会员制（官网核对）"],
+     anchor:"1 秒成片",anchorDesc:"剧情片段",unit:"未公开",basis:"按会员额度折算"}
+  ];
+  DEFAULTS.forEach(function(d){ if(!d.updatedAt) d.updatedAt = "2026-11-20"; });
+
+  /* ===== 追加画布类补充数据（其余画布产品已在上方功能分类中） ===== */
+  DEFAULTS = DEFAULTS.concat([
+    {type:"画布类",cat:"无限画布",name:"Lovart",pos:"演语科技 · 无限画布 + 多 Agent",
+     tech:"多 Agent 编排（模型外采）",scene:["图片","视频"],
+     features:["Coco 前台 + 五类设计 Agent handoff","圈注改稿、局部替换","流程沉淀为 Skill"],
+     pros:["端到端成套出图","流程被产品化","已规模化验证"],cons:["毛利低、依赖补贴","一致性靠人工","积分月清零"],
+     buzz:"成套出图好评；吐槽积分月清零、一致性靠人工",
+     price:["Starter $19.93/月","Basic $39.95/月","Pro $89.97/月","Ultimate $159.99/月"],
+     anchor:"1 张图",anchorDesc:"含 1 次改稿",unit:"≈ ¥1–2.9 / 张",basis:"Starter $19.93 ÷ 1,500 积分"},
+    {type:"画布类",cat:"无限画布",name:"即梦",pos:"字节 · 无限画布 + 右侧 Agent",
+     tech:"自研模型",scene:["图片","视频"],
+     features:["文生图 / 图生视频","生成物直接落画布","批量生成（最多 32 张）"],
+     pros:["免费额度可试","贴合抖音生态","批量能力强"],cons:["精细控制弱","规则调整频繁","商用授权需确认"],
+     buzz:"免费额度好评；吐槽规则变动与一致性",
+     price:["免费额度 + 会员订阅"],
+     anchor:"1 张图",anchorDesc:"1024×1024 起",unit:"未公开（估 ¥0.1–1.2 / 张）",basis:"按站内积分扣点"},
+    {type:"画布类",cat:"故事板画布",name:"万镜一刻",pos:"阿里云 · 故事板 + 无限画布 + Agent",
+     tech:"自研平台与工作流",scene:["视频","短剧"],
+     features:["故事板 / 无限画布 / Agent 三模式","节点二次编辑","短剧与投流模板"],
+     pros:["批量产能稳定","门槛低","云上算力保障"],cons:["创作者生态薄","一致性仍在打磨","档位价差大"],
+     buzz:"批量出片稳定；吐槽一致性与价格档位跨度",
+     price:["基础版 ¥39/月","标准版 ¥2,999/月","积分包 ¥100/1,000 点"],
+     anchor:"1 秒成片",anchorDesc:"短剧/投流成片",unit:"≈ ¥0.6–2.5 / 秒",basis:"¥0.1/点 × 每条约 50–200 点"},
+    {type:"画布类",cat:"实时画布",name:"Krea",pos:"实时生成画布",
+     tech:"多模型聚合 + 自研实时画布",scene:["图片","视频"],
+     features:["边画边生成","图像增强与放大","风格参考"],
+     pros:["实时交互体验独特","放大质量好","迭代快"],cons:["稳定性一般","档位跨度大","中文支持弱"],
+     buzz:"实时画布惊艳；吐槽稳定性与价格跨度",
+     price:["Free","Basic $10/月","Pro $30/月","Max $60/月"],
+     anchor:"1 张图",anchorDesc:"1024×1024 起",unit:"≈ ¥0.2–0.8 / 张",basis:"按 Basic 档均摊"},
+    {type:"画布类",cat:"设计画布",name:"Canva",pos:"模板化设计画布",
+     tech:"自研 Design Model",scene:["图片"],
+     features:["海量模板与品牌套件","Magic Studio 一键改图","多尺寸自动适配"],
+     pros:["门槛最低","模板生态最大","品牌一致性有保障"],cons:["专业深度不足","风格同质化","免费额度少"],
+     buzz:"小白友好；专业设计师嫌深度不足",
+     price:["Free 50 积分","Pro $15/月","Teams $10/席","Enterprise 定制"],
+     anchor:"1 张物料",anchorDesc:"1080×1080 起",unit:"≈ ¥0.5 / 张",basis:"Pro $15 ÷ 约 200 次"},
+    {type:"画布类",cat:"设计画布",name:"稿定设计",pos:"国内在线设计画布",
+     tech:"模板资产 + 外采模型",scene:["图片"],
+     features:["中文模板与电商尺寸","批量改图、抠图","团队协作与品牌规范"],
+     pros:["中文电商最贴","价格低","国内访问稳定"],cons:["设计深度弱","AI 生成一般","企业治理偏轻"],
+     buzz:"电商场景好用；吐槽可编辑性与 AI 能力",
+     price:["个人年卡约 ¥259","企业版按席位（商务）"],
+     anchor:"1 张物料",anchorDesc:"电商主图/海报",unit:"≈ ¥0.3–1 / 张",basis:"按年卡均摊"},
+    {type:"画布类",cat:"画布式编辑器",name:"Recraft",pos:"品牌视觉与矢量生成",
+     tech:"自研模型",scene:["图片"],
+     features:["文生图 / 矢量图 / 图标","Brand Style 保持风格一致","可导出 SVG"],
+     pros:["少见矢量生成","品牌风格统一","导出可用"],cons:["生态较小","中文支持一般","高级功能偏贵"],
+     buzz:"矢量生成独一份；吐槽生态小、中文弱",
+     price:["Free 50 credits/日","Basic $12/月","Advanced $48/月"],
+     anchor:"1 张图",anchorDesc:"含矢量源文件",unit:"≈ ¥0.09–0.2 / 张",basis:"Basic $12 ÷ 约 1,000 credits"}
+  ].filter(function(d){ return d.name === "即梦" || d.name === "万镜一刻"; }));
+  DEFAULTS.forEach(function(d){ if(!d.updatedAt) d.updatedAt = "2026-11-25"; });
+
+  /* ===== AI 短剧 / 漫剧 Agent（剧本→分镜→成片的专用智能体） ===== */
+  DEFAULTS = DEFAULTS.concat([
+    {type:"短剧/漫剧",cat:"短剧 Agent",name:"小云雀AI",pos:"字节 · 一句话生成一集短剧",
+     tech:"自研模型 + Agent",scene:["短剧","漫剧"],
+     features:["一句话生成剧本、人设、分镜","Seedance 2.0 生成视频","线性工作流 + 自动时间线"],
+     pros:["一键生成最顺","剧本完成度业内较好","价格低"],cons:["角色图与设定偏差大","站位/物理错误多","成片仍需返工"],
+     buzz:"一句话出剧最强；实测角色与站位偏差、成片要返工",
+     price:["连续包月 ¥39/月（赠 1,200 积分）","Seedance 2.0 Fast 11 积分/秒","普通版 14 积分/秒"],
+     anchor:"1 秒成片",anchorDesc:"短剧成片输出",unit:"≈ ¥0.36–0.46 / 秒",basis:"39 元 ÷ 1,200 积分 × 11–14 积分/秒"},
+    {type:"短剧/漫剧",cat:"影视制作 Agent",name:"纳逗Pro",pos:"爱奇艺 · 专业影视制作 Agent",
+     tech:"自研 + 影视数据",scene:["短剧","短片"],
+     features:["专业分镜（景别/构图/运镜）","剧本→分镜→视频","音效与音乐建议"],
+     pros:["镜头质量专业","分镜最贴近实拍需求","适合艺术短片"],cons:["偏短片、难理解短剧节奏","黑箱不可中止","积分消耗不透明"],
+     buzz:"画面专业；吐槽黑箱、积分不透明、难做短剧",
+     price:["积分制（实测约 ¥110/集）"],
+     anchor:"1 秒成片",anchorDesc:"影视级短片/短剧",unit:"≈ ¥1.7–2 / 秒（实测折算）",basis:"实测一集约 ¥110"},
+    {type:"短剧/漫剧",cat:"漫剧平台",name:"巨日禄",pos:"AI 漫剧批量生产平台",
+     tech:"自研流水线",scene:["漫剧","短剧"],
+     features:["漫剧批量生产","需自备剧本/角色/场景资产","团队协作与资产库"],
+     pros:["市占率高、爆款多","适合批量","资产可复用"],cons:["需自备 AI 资产","小白门槛高","流程偏重"],
+     buzz:"漫剧早期霸主；吐槽门槛高、需自备资产",
+     price:["团队/企业商务报价"],
+     anchor:"1 秒成片",anchorDesc:"漫剧成片",unit:"未公开",basis:"按项目/席位报价"},
+    {type:"短剧/漫剧",cat:"漫剧平台",name:"万兴剧厂",pos:"万兴科技 · AI 漫剧创作",
+     tech:"自研平台 + Seedance/Vidu",scene:["漫剧","短剧"],
+     features:["剧本→分镜→成片","角色/场景资产生成","智能分镜提示词与音效"],
+     pros:["镜头衔接自然","资产生成方便","支持音效音乐"],cons:["分镜过粗易崩","依赖 Seedance 过审","折算单价无优势"],
+     buzz:"短剧可用；吐槽分镜过粗、Seedance 过审玄学",
+     price:["体验版 ¥100/1,000 积分","团队专业版按量"],
+     anchor:"1 秒成片",anchorDesc:"漫剧成片",unit:"≈ ¥1.2 / 秒起",basis:"Seedance 2.0 折算最低 1.2 元/秒"},
+    {type:"短剧/漫剧",cat:"短剧工作台",name:"天工短剧工作台",pos:"昆仑万维 · 短剧 Agent 工作台",
+     tech:"自研平台",scene:["短剧"],
+     features:["传统分镜 + 一键生成","道具识别与分镜拆分","可调镜头时长与模型"],
+     pros:["工作流便利","分镜可细调","道具识别精细"],cons:["不支持 Seedance 2.0","画质落后一档","起充 200 元"],
+     buzz:"流程顺手；吐槽模型缺失、画质落后",
+     price:["起充 ¥200/1,000 积分"],
+     anchor:"1 秒成片",anchorDesc:"短剧成片",unit:"≈ ¥1.5–2 / 秒（估算）",basis:"200 元 ÷ 1,000 积分折算"},
+    {type:"短剧/漫剧",cat:"短剧/TV 平台",name:"LibTV",pos:"演语科技 · AI 短剧/TV 平台",
+     tech:"自研 + 多模型",scene:["短剧","漫剧"],
+     features:["短剧与长视频创作","与 LiblibAI 模型生态打通","剧集资产与角色管理"],
+     pros:["模型生态丰富","与 Lovart 同集团","迭代较快"],cons:["公开评测少","成片一致性待验证","定价不透明"],
+     buzz:"背靠 LiblibAI 生态；公开评测较少",
+     price:["会员/商务（官网核对）"],
+     anchor:"1 秒成片",anchorDesc:"短剧成片",unit:"未公开",basis:"按会员额度折算"}
+  ]);
+  DEFAULTS.forEach(function(d){ if(!d.updatedAt) d.updatedAt = "2026-11-25"; });
+
+  /* ===== 扩展开发类与前端设计类 Agent ===== */
+  DEFAULTS = DEFAULTS.concat([
+    {type:"编程与建站",cat:"云端编码 Agent",name:"OpenAI Codex",pos:"OpenAI · 云端异步编码 Agent",
+     tech:"自研模型",scene:["代码"],
+     features:["云端沙箱自主实现并出 PR","多任务并行","IDE / CLI 同一能力"],
+     pros:["白天派活晚上收代码","批量并行效率高","与 ChatGPT 生态一体"],cons:["私有化弱","架构级重构偏弱","用量计费不透明"],
+     buzz:"好评：异步并行省心；差评：复杂重构弱、计费不透明",
+     price:["含于 Plus $20/月","Business $25/席","按 Codex 式用量"],
+     anchor:"1 个功能点",anchorDesc:"3–5 文件 / 1 小时",unit:"≈ ¥1.4–14 / 功能点",basis:"按订阅内额度均摊"},
+    {type:"编程与建站",cat:"自主工程师",name:"Devin",pos:"Cognition · 自主软件工程师",
+     tech:"自研 Agent",scene:["代码"],
+     features:["自主规划并完成开发任务","浏览器 + 终端 + 代码库操作","自动跑测试并提 PR"],
+     pros:["端到端自主性最强","适合长任务","可并行多个实例"],cons:["价格高","复杂需求仍需人盯","按 ACU 用量计费"],
+     buzz:"自主性惊艳；吐槽价格与可控性",
+     price:["Core $20/月起（按用量）","Team $500/月"],
+     anchor:"1 个功能点",anchorDesc:"完整开发任务",unit:"≈ ¥20–60 / 功能点（估算）",basis:"按 ACU 用量折算"},
+    {type:"编程与建站",cat:"大仓 Agent",name:"Augment Code",pos:"企业级代码 Agent",
+     tech:"自研索引 + Agent",scene:["代码"],
+     features:["超大仓库上下文","Agent 模式跨文件改代码","代码评审建议"],
+     pros:["超大仓库理解强","上下文长","团队功能完整"],cons:["价格偏高","生态较小","中文支持一般"],
+     buzz:"大仓场景好评；吐槽价格",
+     price:["Indie $20/月","Pro $50/月","Enterprise 定制"],
+     anchor:"1 个功能点",anchorDesc:"3–5 文件 / 1 小时",unit:"≈ ¥1.5–5 / 功能点",basis:"按 Pro 档均摊"},
+
+    {type:"UI/前端设计",cat:"全栈应用生成",name:"Lovable",pos:"提示词生成全栈应用",
+     tech:"自研生成链路",scene:["页面","代码"],
+     features:["文本生成全栈应用","Supabase 等后端集成","一键部署"],
+     pros:["非工程师可用","前后端一把梭","上线快"],cons:["复杂逻辑易崩","按积分计费","代码质量一般"],
+     buzz:"非技术创始人好评；吐槽复杂项目崩",
+     price:["Free","Pro $25/月","Business $50/月"],
+     anchor:"1 个页面",anchorDesc:"可运行页面/应用",unit:"≈ ¥5–15 / 页",basis:"按 Pro 档均摊"},
+    {type:"UI/前端设计",cat:"原型生成",name:"Uizard",pos:"AI UI 原型设计",
+     tech:"自研模型 + 模板",scene:["页面"],
+     features:["文本/截图生成 UI","自动生成多屏流程","可导出 Figma"],
+     pros:["上手快","适合早期原型","价格低"],cons:["设计深度弱","一致性一般","企业能力弱"],
+     buzz:"原型快；吐槽设计深度",
+     price:["Free","Pro $12/月","Business $39/月"],
+     anchor:"1 个页面",anchorDesc:"可编辑 UI 稿",unit:"≈ ¥1–4 / 页",basis:"按 Pro 档均摊"}
+  ]);
+  DEFAULTS.forEach(function(d){ if(!d.updatedAt) d.updatedAt = "2026-11-25"; });
+
+  /* ===== 各品类再扩充 ===== */
+  DEFAULTS = DEFAULTS.concat([
+    {type:"通用任务",cat:"通用助手",name:"天工 AI",pos:"昆仑万维 · 通用 Agent 助手",
+     tech:"自研模型",scene:["通用"],
+     features:["搜索 + 写作 + 做表","多轮任务编排","文档解析"],
+     pros:["国内可用","免费额度大","中文好"],cons:["深度任务弱","产物导出一般","企业治理弱"],
+     buzz:"中文体验好评；吐槽深度任务与导出",
+     price:["免费版","会员制（官网核对）"],
+     anchor:"1 个任务",anchorDesc:"一次完整任务",unit:"未公开",basis:"按会员额度折算"},
+    {type:"通用任务",cat:"搜索 Agent",name:"纳米 AI",pos:"360 · 搜索型 Agent",
+     tech:"自研 + 多模型",scene:["通用"],
+     features:["多步搜索与整合","文档/网页解析","一键成稿"],
+     pros:["搜索链路完整","免费可用","上手快"],cons:["创作能力一般","广告干扰","治理弱"],
+     buzz:"搜资料顺手；吐槽创作深度",
+     price:["免费版","会员制（官网核对）"],
+     anchor:"1 个任务",anchorDesc:"一次研究型任务",unit:"未公开",basis:"按会员额度折算"},
+
+    {type:"编程与建站",cat:"开源编码 Agent",name:"Cline",pos:"开源 IDE Agent（BYO Key）",
+     tech:"开源 + 自带模型",scene:["代码"],
+     features:["VS Code 内自主改代码","多步工具调用","自带 API Key"],
+     pros:["开源免费","模型可自选","透明可控"],cons:["需自备 Key","无托管服务","体验依赖模型"],
+     buzz:"开源社区好评；吐槽要自己配 Key",
+     price:["开源免费","按所用模型计费"],
+     anchor:"1 个功能点",anchorDesc:"3–5 文件 / 1 小时",unit:"≈ ¥0.5–3 / 功能点",basis:"按模型 token 价折算"},
+    {type:"编程与建站",cat:"开源补全",name:"Continue",pos:"开源编码助手",
+     tech:"开源 + 多模型",scene:["代码"],
+     features:["IDE 补全与对话","自定义模型与规则","企业可自托管"],
+     pros:["开源可自托管","规则可定制","免费"],cons:["Agent 能力弱于商业品","需配置","生态小"],
+     buzz:"自托管场景好评；吐槽 Agent 能力",
+     price:["开源免费","企业版定制"],
+     anchor:"1 个功能点",anchorDesc:"单文件改动",unit:"≈ ¥0.2–1.5 / 功能点",basis:"按模型 token 价折算"},
+    {type:"编程与建站",cat:"企业补全",name:"Tabnine",pos:"企业级代码补全与 Agent",
+     tech:"自研小模型",scene:["代码"],
+     features:["私有化部署","代码补全与 Chat","合规与审计"],
+     pros:["可完全私有化","合规强","不泄露代码"],cons:["生成质量弱于大模型","价格高","生态小"],
+     buzz:"合规场景首选；吐槽生成质量",
+     price:["Dev $9/月","Enterprise $39/席"],
+     anchor:"1 个功能点",anchorDesc:"单文件改动",unit:"≈ ¥1–3 / 功能点",basis:"按席位均摊"},
+
+    {type:"办公文档与演示",cat:"协作办公",name:"飞书智能伙伴",pos:"飞书 · 组织内 AI 同事",
+     tech:"自研 + 外采",scene:["文档"],
+     features:["权限与本人一致的 Agent","文档/表格/会议处理","妙搭生成业务系统"],
+     pros:["权限一致、合规","与协作深度绑定","国内可用"],cons:["离开飞书不可用","格式深度不足","定价不透明"],
+     buzz:"权限设计好评；吐槽生态绑定",
+     price:["飞书企业版席位 + AI 额度"],
+     anchor:"1 页 PPT",anchorDesc:"等量文档产出",unit:"≈ ¥0.3–1.2 / 页",basis:"按席位 + 用量均摊"},
+    {type:"办公文档与演示",cat:"会议纪要",name:"Otter.ai",pos:"会议转写与纪要 Agent",
+     tech:"自研语音模型",scene:["文档"],
+     features:["实时转写与摘要","行动项提取","会议检索"],
+     pros:["转写准确","纪要结构化好","集成 Zoom/Meet"],cons:["中文支持一般","价格偏高","仅会议场景"],
+     buzz:"英文会议好用；吐槽中文与价格",
+     price:["Free","Pro $16.99/月","Business $30/席"],
+     anchor:"1 页 PPT",anchorDesc:"一场会议纪要",unit:"≈ ¥0.5–2 / 场",basis:"按订阅均摊"},
+
+    {type:"设计与品牌",cat:"设计系统",name:"Figma",pos:"Figma · 设计协作 + AI Agent",
+     tech:"自研 + 外采模型",scene:["图片","页面"],
+     features:["画布内 Agent 与 Make","设计系统与变量","交付与协作"],
+     pros:["设计系统级能力","协作生态最大","企业采购成熟"],cons:["AI 生成语义弱","免费额度少","依赖订阅"],
+     buzz:"设计师基本盘稳固；吐槽 AI 生成语义弱",
+     price:["Free 500 credits/月","Pro $16–20/席","Org $55 / Ent $90"],
+     anchor:"1 张物料",anchorDesc:"UI 稿/物料",unit:"≈ ¥0.08–0.6 / 张",basis:"按 credits 折算"},
+    {type:"设计与品牌",cat:"AI 设计工具",name:"Motiff 妙多",pos:"国产 AI 设计工具",
+     tech:"自研 + 外采模型",scene:["图片","页面"],
+     features:["AI 生成 UI 与设计稿","设计系统与协作","国产化部署"],
+     pros:["国内访问稳定","价格低","中文支持好"],cons:["生态小于 Figma","AI 能力早期","插件少"],
+     buzz:"国产替代选项；吐槽生态与 AI 成熟度",
+     price:["免费版","企业版（官网核对）"],
+     anchor:"1 张物料",anchorDesc:"UI 稿",unit:"未公开",basis:"按席位/企业报价"},
+
+    {type:"UI/前端设计",cat:"界面生成",name:"Galileo AI",pos:"文本生成可编辑 UI",
+     tech:"自研模型",scene:["页面"],
+     features:["文本生成高保真 UI","可导出 Figma","多屏流程生成"],
+     pros:["出稿质量高","可直接编辑","流程完整"],cons:["价格偏高","中文支持弱","生态小"],
+     buzz:"UI 出稿质量好评；吐槽价格",
+     price:["订阅制（官网核对）"],
+     anchor:"1 个页面",anchorDesc:"可编辑 UI 稿",unit:"≈ ¥5–20 / 页（估算）",basis:"按订阅额度折算"},
+    {type:"UI/前端设计",cat:"无代码建站",name:"Webstudio",pos:"开源可视化建站 + AI",
+     tech:"开源 + AI 生成",scene:["页面"],
+     features:["可视化建站","AI 生成区块","导出标准代码"],
+     pros:["开源可自托管","代码可导出","价格低"],cons:["AI 能力基础","中文生态弱","模板少"],
+     buzz:"开源建站好评；吐槽 AI 与模板",
+     price:["开源免费","Cloud 订阅（官网核对）"],
+     anchor:"1 个页面",anchorDesc:"响应式页面",unit:"≈ ¥1–5 / 页",basis:"按订阅均摊"},
+
+    {type:"短剧/漫剧",cat:"短剧 Agent",name:"剧火 AI",pos:"AI 短剧一站式 Agent",
+     tech:"自研流水线",scene:["短剧","漫剧"],
+     features:["剧本→分镜→成片","角色一致性管理","批量出片"],
+     pros:["流程完整","上手较快","适合批量"],cons:["成片质量波动","积分不透明","公开信息少"],
+     buzz:"一站式流程好评；吐槽成片质量波动",
+     price:["会员/积分制（官网核对）"],
+     anchor:"1 秒成片",anchorDesc:"短剧成片",unit:"未公开",basis:"按积分折算"},
+    {type:"短剧/漫剧",cat:"影视制作",name:"Seko 2.0",pos:"商汤 · 影视级生成 Agent",
+     tech:"自研模型",scene:["短剧","短片"],
+     features:["剧本与分镜生成","角色与场景一致性","视频生成与后期"],
+     pros:["画面质量好","技术底子强","适合精品"],cons:["价格高","面向专业团队","公开评测少"],
+     buzz:"画面质感受认可；吐槽价格与门槛",
+     price:["商务/订阅（官网核对）"],
+     anchor:"1 秒成片",anchorDesc:"影视级片段",unit:"未公开",basis:"按项目报价"},
+    {type:"短剧/漫剧",cat:"开放共创",name:"灵境 AI",pos:"AI 漫剧共创平台",
+     tech:"自研 + 多模型",scene:["漫剧"],
+     features:["剧本与分镜共创","多模型可选","团队协作"],
+     pros:["模型开放","适合中小团队","上手中等"],cons:["一致性一般","生态小","数据积累少"],
+     buzz:"中小团队可用；吐槽一致性与生态",
+     price:["会员/商务（官网核对）"],
+     anchor:"1 秒成片",anchorDesc:"漫剧成片",unit:"未公开",basis:"按积分/项目折算"}
+  ]);
+  DEFAULTS.forEach(function(d){ if(!d.updatedAt) d.updatedAt = "2026-11-25"; });
+
+  /* ===== 图像 / 视频 类的 Agent 型产品 ===== */
+  DEFAULTS = DEFAULTS.concat([
+    {type:"图像生成",cat:"商品图 Agent",name:"Flair AI",pos:"画布式商品图 Agent",
+     tech:"自研 + 多模型",scene:["图片"],
+     features:["拖拽式画布布置商品场景","一键生成场景与模特","批量出图与模板"],
+     pros:["电商商品图垂直","画布可控","批量效率高"],cons:["通用创作弱","价格偏高","中文一般"],
+     buzz:"电商图好用；吐槽价格与通用性",
+     price:["订阅制（官网核对）"],
+     anchor:"1 张图",anchorDesc:"商品场景图",unit:"≈ ¥1–5 / 张",basis:"按订阅额度折算"},
+    {type:"图像生成",cat:"广告素材 Agent",name:"AdCreative.ai",pos:"广告素材生成与评分 Agent",
+     tech:"自研 + 多模型",scene:["图片"],
+     features:["批量生成广告素材","素材评分与预测","多尺寸适配"],
+     pros:["批量出素材","自带效果评分","面向投放"],cons:["创意同质化","模板感强","订阅偏贵"],
+     buzz:"投放团队好评；吐槽素材同质化",
+     price:["$39/月起（官网核对）"],
+     anchor:"1 张图",anchorDesc:"广告素材",unit:"≈ ¥0.5–2 / 张",basis:"按订阅额度均摊"},
+    {type:"图像生成",cat:"电商商拍 Agent",name:"美图设计室",pos:"国内 AI 商拍与设计 Agent",
+     tech:"自研模型",scene:["图片"],
+     features:["AI 商拍/模特换装","批量抠图与场景","电商尺寸模板"],
+     pros:["中文电商贴","价格低","上手快"],cons:["创意上限低","专业控制弱","版权需确认"],
+     buzz:"电商商拍好用；吐槽创意上限",
+     price:["会员制（官网核对）"],
+     anchor:"1 张图",anchorDesc:"商拍图",unit:"≈ ¥0.5–3 / 张",basis:"按会员额度折算"},
+    {type:"图像生成",cat:"营销图 Agent",name:"Icon",pos:"从 Brief 到投放素材的 Agent",
+     tech:"自研 Agent",scene:["图片"],
+     features:["输入网址/Brief 生成整套素材","多尺寸多渠道适配","批量迭代"],
+     pros:["端到端出素材","适合中小品牌","迭代快"],cons:["风格单一","深度编辑弱","价格不透明"],
+     buzz:"小品牌省事；吐槽风格单一",
+     price:["订阅制（官网核对）"],
+     anchor:"1 张图",anchorDesc:"营销素材",unit:"≈ ¥2–8 / 张",basis:"按订阅额度折算"},
+
+    {type:"视频生成",cat:"数字人视频 Agent",name:"HeyGen",pos:"脚本→数字人成片 Agent",
+     tech:"自研数字人模型",scene:["视频"],
+     features:["脚本生成与数字人口播","多语言配音与口型","批量视频与 API"],
+     pros:["数字人自然","多语言强","批量效率高"],cons:["真人感有限","价格偏高","复杂场景弱"],
+     buzz:"数字人口播好用；吐槽真人感与价格",
+     price:["Free","Creator $29/月","Business $89/月（官网核对）"],
+     anchor:"1 秒视频",anchorDesc:"数字人口播",unit:"≈ ¥1–5 / 秒",basis:"按订阅额度折算"},
+    {type:"视频生成",cat:"企业视频 Agent",name:"Synthesia",pos:"企业级 AI 视频 Agent",
+     tech:"自研数字人模型",scene:["视频"],
+     features:["模板化企业视频","多语言数字人","协作与品牌管控"],
+     pros:["企业治理强","多语言全","模板成熟"],cons:["创意受限","价格高","定制需商务"],
+     buzz:"企业培训场景好评；吐槽创意与价格",
+     price:["Starter $29/月","Creator $89/月","Enterprise 定制（官网核对）"],
+     anchor:"1 秒视频",anchorDesc:"企业视频",unit:"≈ ¥1–4 / 秒",basis:"按订阅均摊"},
+    {type:"视频生成",cat:"切片 Agent",name:"OpusClip",pos:"长视频→爆款切片 Agent",
+     tech:"自研模型 + 编排",scene:["视频"],
+     features:["长视频自动切片","爆款潜力评分","自动字幕与重排版"],
+     pros:["切片准确","一键多发","免费额度"],cons:["依赖原片质量","模板化","中文一般"],
+     buzz:"自媒体好评；吐槽模板化与中文",
+     price:["Free","Starter $15/月","Pro $29/月（官网核对）"],
+     anchor:"1 条切片",anchorDesc:"60 秒竖版切片",unit:"≈ ¥0.5–2 / 条",basis:"按订阅额度均摊"},
+    {type:"视频生成",cat:"剪辑 Agent",name:"Descript",pos:"文稿式视频剪辑 Agent",
+     tech:"自研语音 + 编辑模型",scene:["视频"],
+     features:["改文稿即改视频","Underlord 自动剪辑","降噪与配音"],
+     pros:["剪辑范式独特","改稿即改片","协作方便"],cons:["复杂特效弱","长视频卡顿","中文支持一般"],
+     buzz:"播客/口播好评；吐槽复杂特效与中文",
+     price:["Free","Hobbyist $19/月","Creator $35/月（官网核对）"],
+     anchor:"1 秒视频",anchorDesc:"成片剪辑",unit:"≈ ¥0.2–1 / 秒",basis:"按订阅均摊"}
+  ]);
+  DEFAULTS.forEach(function(d){ if(!d.updatedAt) d.updatedAt = "2026-11-25"; });
+
+  /* ===== 第一批扩充：通用 / 办公 / 图像 / 视频 ===== */
+  DEFAULTS = DEFAULTS.concat([
+    {type:"通用任务",cat:"通用助手",name:"智谱清言",pos:"智谱 · 通用 Agent 助手",
+     tech:"自研模型",scene:["通用"],
+     features:["多轮对话与工具调用","文档解析与写作","智能体广场"],
+     pros:["中文理解好","国内可用","模型可选"],cons:["长任务弱","产物导出一般","企业治理弱"],
+     buzz:"中文体验好评；吐槽长任务与导出",
+     price:["免费版","会员制（官网核对）"],
+     anchor:"1 个任务",anchorDesc:"一次完整任务",unit:"未公开",basis:"按会员额度折算"},
+    {type:"通用任务",cat:"通用助手",name:"腾讯元宝",pos:"腾讯 · 通用助手",
+     tech:"自研模型",scene:["通用"],
+     features:["混元 + DeepSeek 双模型","公众号内容检索","文档与图片理解"],
+     pros:["免费可用","微信生态内容","中文好"],cons:["Agent 能力弱","深度任务一般","治理弱"],
+     buzz:"免费好用；吐槽 Agent 能力",
+     price:["免费"],
+     anchor:"1 个任务",anchorDesc:"一次问答/写作任务",unit:"免费",basis:"无按次计费"},
+    {type:"通用任务",cat:"长文 Agent",name:"Kimi",pos:"月之暗面 · 长文本 Agent",
+     tech:"自研模型",scene:["通用"],
+     features:["超长上下文阅读","联网搜索与整理","文档生成"],
+     pros:["长文能力强","免费额度大","中文好"],cons:["Agent 编排弱","导出格式少","企业治理弱"],
+     buzz:"长文阅读好评；吐槽编排与导出",
+     price:["免费版","会员制（官网核对）"],
+     anchor:"1 个任务",anchorDesc:"一次长文任务",unit:"未公开",basis:"按会员额度折算"},
+    {type:"通用任务",cat:"画布工作台",name:"Flowith",pos:"画布式 AI 工作台",
+     tech:"多模型编排",scene:["通用"],
+     features:["节点式画布编排任务","多智能体协作","知识库与工具"],
+     pros:["编排可视化","适合复杂任务","模型可选"],cons:["学习成本","价格偏高","中文一般"],
+     buzz:"编排体验新颖；吐槽门槛与价格",
+     price:["订阅制（官网核对）"],
+     anchor:"1 个任务",anchorDesc:"一次编排任务",unit:"≈ ¥1–5 / 任务",basis:"按订阅额度折算"},
+
+    {type:"办公文档与演示",cat:"AI 演示",name:"讯飞智文",pos:"科大讯飞 · AI 生成 PPT",
+     tech:"自研模型",scene:["文档"],
+     features:["一句话生成 PPT","文档转演示","模板与排版"],
+     pros:["中文排版好","生成快","价格低"],cons:["复杂版式弱","模板同质化","导出受限"],
+     buzz:"中文 PPT 快；吐槽模板同质化",
+     price:["免费版","会员制（官网核对）"],
+     anchor:"1 页 PPT",anchorDesc:"标准版式",unit:"≈ ¥0.3–1 / 页",basis:"按会员额度折算"},
+    {type:"办公文档与演示",cat:"AI 演示",name:"Tome",pos:"AI 叙事式演示",
+     tech:"自研 + 外采",scene:["文档"],
+     features:["故事线生成演示","多媒体拼接","网页发布"],
+     pros:["叙事结构好","设计感强","上手快"],cons:["中文支持一般","模板偏少","导出受限"],
+     buzz:"叙事与设计好评；吐槽中文与导出",
+     price:["Free","Pro $16/月（官网核对）"],
+     anchor:"1 页 PPT",anchorDesc:"叙事页",unit:"≈ ¥0.5–2 / 页",basis:"按订阅均摊"},
+    {type:"办公文档与演示",cat:"AI 演示",name:"Beautiful.ai",pos:"智能排版演示工具",
+     tech:"自研排版引擎",scene:["文档"],
+     features:["自动排版","智能模板","团队品牌规范"],
+     pros:["排版自动化强","成品好看","团队规范"],cons:["中文一般","价格偏高","灵活性低"],
+     buzz:"排版省心；吐槽灵活性与中文",
+     price:["Pro $12/月","Team $50/席（官网核对）"],
+     anchor:"1 页 PPT",anchorDesc:"自动排版页",unit:"≈ ¥0.5–2 / 页",basis:"按订阅均摊"},
+    {type:"办公文档与演示",cat:"AI 笔记",name:"Mem",pos:"AI 笔记与知识 Agent",
+     tech:"自研 + 外采",scene:["文档"],
+     features:["自动整理笔记","语义检索","写作辅助"],
+     pros:["整理省心","检索强","轻量"],cons:["生态小","协作弱","中文一般"],
+     buzz:"个人知识管理好评；吐槽协作",
+     price:["$10/月起（官网核对）"],
+     anchor:"1 页 PPT",anchorDesc:"等量笔记产出",unit:"≈ ¥0.3–1 / 页",basis:"按订阅均摊"},
+    {type:"办公文档与演示",cat:"会议纪要",name:"通义听悟",pos:"阿里 · 会议与课程纪要",
+     tech:"自研语音模型",scene:["文档"],
+     features:["实时转写与翻译","要点与待办提取","音视频解析"],
+     pros:["中文转写准","免费额度","结构化好"],cons:["仅会议场景","导出一般","Agent 能力弱"],
+     buzz:"中文纪要好评；吐槽场景单一",
+     price:["免费版","会员制（官网核对）"],
+     anchor:"1 页 PPT",anchorDesc:"一场会议纪要",unit:"≈ ¥0.2–1 / 场",basis:"按会员额度折算"},
+
+    {type:"图像生成",cat:"创意画布",name:"Leonardo AI",pos:"图像生成 + Canvas 编辑",
+     tech:"自研模型",scene:["图片"],
+     features:["文生图与风格模型","Canvas 实时编辑","批量与放大"],
+     pros:["模型丰富","画布编辑","免费额度"],cons:["中文弱","商用条款需确认","企业能力弱"],
+     buzz:"出图质量好评；吐槽中文与额度",
+     price:["Free","Apprentice $12/月","Artisan $30/月（官网核对）"],
+     anchor:"1 张图",anchorDesc:"1024×1024",unit:"≈ ¥0.2–1 / 张",basis:"按订阅额度折算"},
+    {type:"图像生成",cat:"素材平台",name:"Freepik AI",pos:"素材库 + AI 生成",
+     tech:"多模型聚合",scene:["图片"],
+     features:["AI 生图与改图","海量素材库","批量与模板"],
+     pros:["素材 + 生成一体","价格低","多模型"],cons:["创意同质化","版权需核","中文一般"],
+     buzz:"素材一站式；吐槽同质化与版权",
+     price:["Premium €12/月起（官网核对）"],
+     anchor:"1 张图",anchorDesc:"素材级图片",unit:"≈ ¥0.2–1 / 张",basis:"按订阅均摊"},
+    {type:"图像生成",cat:"商品图",name:"Photoroom",pos:"商品图与背景生成",
+     tech:"自研分割模型",scene:["图片"],
+     features:["一键去背与场景合成","批量商品图","模板与品牌"],
+     pros:["抠图准","电商好用","移动端强"],cons:["创意弱","高级功能订阅","中文一般"],
+     buzz:"电商抠图好评；吐槽创意",
+     price:["Free","Pro $12.99/月（官网核对）"],
+     anchor:"1 张图",anchorDesc:"商品主图",unit:"≈ ¥0.5–2 / 张",basis:"按订阅均摊"},
+    {type:"图像生成",cat:"商品场景",name:"Pebblely",pos:"商品场景图生成",
+     tech:"自研模型",scene:["图片"],
+     features:["商品图自动换场景","多风格模板","批量生成"],
+     pros:["场景自然","操作简单","电商垂直"],cons:["控制项少","价格偏高","中文弱"],
+     buzz:"场景图自然；吐槽控制与价格",
+     price:["$19/月起（官网核对）"],
+     anchor:"1 张图",anchorDesc:"商品场景图",unit:"≈ ¥1–3 / 张",basis:"按订阅均摊"},
+    {type:"图像生成",cat:"国内出图",name:"无界 AI",pos:"国内 AI 绘画平台",
+     tech:"自研 + 多模型",scene:["图片"],
+     features:["多风格模型","批量生成","工作流模板"],
+     pros:["中文提示词好","价格低","国内可用"],cons:["企业能力弱","版权需确认","生态小"],
+     buzz:"中文出图方便；吐槽生态与版权",
+     price:["会员制（官网核对）"],
+     anchor:"1 张图",anchorDesc:"1024×1024",unit:"≈ ¥0.1–0.5 / 张",basis:"按会员额度折算"},
+    {type:"图像生成",cat:"国内出图",name:"触站 AI",pos:"国内二次元与商用出图",
+     tech:"自研 + 多模型",scene:["图片"],
+     features:["二次元/插画风格","商用授权选项","批量生成"],
+     pros:["风格覆盖广","商用授权","价格低"],cons:["写实弱","企业能力弱","生态小"],
+     buzz:"二次元好用；吐槽写实与生态",
+     price:["会员制（官网核对）"],
+     anchor:"1 张图",anchorDesc:"1024×1024",unit:"≈ ¥0.1–0.5 / 张",basis:"按会员额度折算"},
+
+    {type:"视频生成",cat:"文本成片",name:"InVideo AI",pos:"文本→成片视频 Agent",
+     tech:"自研编排 + 多模型",scene:["视频"],
+     features:["脚本→素材→配音→成片","多语言配音","模板与批量"],
+     pros:["全流程自动化","上手快","出片快"],cons:["素材同质化","精细控制弱","价格偏高"],
+     buzz:"全流程省事；吐槽素材同质化",
+     price:["Plus $28/月（官网核对）"],
+     anchor:"1 秒视频",anchorDesc:"成片输出",unit:"≈ ¥0.5–2 / 秒",basis:"按订阅均摊"},
+    {type:"视频生成",cat:"图文成片",name:"Pictory",pos:"长文/脚本→视频",
+     tech:"自研编排",scene:["视频"],
+     features:["文章转视频","自动配图配音","字幕与模板"],
+     pros:["图文转片快","价格低","批量"],cons:["创意弱","模板化","中文一般"],
+     buzz:"图文转视频好用；吐槽模板化",
+     price:["Starter $19/月（官网核对）"],
+     anchor:"1 秒视频",anchorDesc:"成片输出",unit:"≈ ¥0.2–1 / 秒",basis:"按订阅均摊"},
+    {type:"视频生成",cat:"在线剪辑",name:"VEED",pos:"在线剪辑 + AI 编排",
+     tech:"自研 + 外采",scene:["视频"],
+     features:["在线剪辑与字幕","AI 生成与改写","团队协作"],
+     pros:["浏览器可用","协作方便","模板多"],cons:["长视频弱","价格偏高","中文一般"],
+     buzz:"协作剪辑好评；吐槽长视频与价格",
+     price:["Free","Lite $12/月","Pro $24/月（官网核对）"],
+     anchor:"1 秒视频",anchorDesc:"成片剪辑",unit:"≈ ¥0.2–1 / 秒",basis:"按订阅均摊"},
+    {type:"视频生成",cat:"数字人",name:"Colossyan",pos:"企业数字人视频",
+     tech:"自研数字人",scene:["视频"],
+     features:["数字人 + 文档转视频","多语言","品牌与协作"],
+     pros:["企业培训友好","多语言","模板成熟"],cons:["创意受限","价格高","中文一般"],
+     buzz:"培训视频好用；吐槽创意与价格",
+     price:["Starter $27/月（官网核对）"],
+     anchor:"1 秒视频",anchorDesc:"数字人成片",unit:"≈ ¥1–4 / 秒",basis:"按订阅均摊"},
+    {type:"视频生成",cat:"数字人",name:"Elai.io",pos:"文本→数字人视频",
+     tech:"自研数字人",scene:["视频"],
+     features:["文本生成数字人视频","多语言配音","API 与批量"],
+     pros:["批量效率高","多语言","API 可用"],cons:["真人感一般","价格偏高","中文一般"],
+     buzz:"批量数字人好评；吐槽真人感",
+     price:["Basic $29/月（官网核对）"],
+     anchor:"1 秒视频",anchorDesc:"数字人成片",unit:"≈ ¥1–4 / 秒",basis:"按订阅均摊"},
+    {type:"视频生成",cat:"图文成片",name:"Fliki",pos:"文本→视频与配音",
+     tech:"自研编排",scene:["视频"],
+     features:["文本转视频","多语言配音","模板与批量"],
+     pros:["配音自然","价格低","上手快"],cons:["素材同质化","控制弱","中文一般"],
+     buzz:"配音好评；吐槽素材同质化",
+     price:["Standard $21/月（官网核对）"],
+     anchor:"1 秒视频",anchorDesc:"成片输出",unit:"≈ ¥0.2–1 / 秒",basis:"按订阅均摊"}
+  ]);
+  DEFAULTS.forEach(function(d){ if(!d.updatedAt) d.updatedAt = "2026-11-25"; });
+
   // 大厂产品不再展示（保留数据便于日后恢复）
-  var HIDDEN_NAMES = [];
+  var HIDDEN_NAMES = ["v0（Vercel）","Midjourney","Ideogram","Recraft","Krea","可灵 AI","Runway","Pika","PixVerse","海螺 AI","即梦"];
   function visibleDefaults(){
     return clone(DEFAULTS).filter(function(d){ return HIDDEN_NAMES.indexOf(d.name) < 0; });
   }
@@ -637,6 +1302,44 @@
   };
   function buzz(d){ return (d.buzz && d.buzz.trim()) || BUZZ[d.name] || "—"; }
 
+  /* ===== 技术底座：区分自研模型 / 自研工程 / 编排套壳 ===== */
+  var TECH = {
+    "Manus":"自研 Agent 框架（模型外采）",
+    "Genspark":"多模型编排（套壳偏多）",
+    "扣子（Coze）":"自研平台与工作流",
+    "ChatGPT Work":"自研模型",
+    "Cursor":"自研索引 + Agent 工程",
+    "Windsurf":"自研 Agent 工程",
+    "Claude Code":"自研模型",
+    "Replit Agent 4":"自研运行时 + Agent",
+    "Bolt.new":"自研 WebContainer",
+    "Gamma":"自研版式引擎",
+    "Notion AI":"工作区集成（模型外采）",
+    "WPS 灵犀":"自研 + 外采混合",
+    "Midjourney":"自研模型",
+    "Ideogram":"自研模型",
+    "Recraft":"自研模型",
+    "Krea":"多模型聚合 + 自研实时画布",
+    "Canva":"自研 Design Model",
+    "Lovart":"多 Agent 编排（模型外采）",
+    "稿定设计":"模板资产 + 外采模型",
+    "Framer":"自研建站引擎",
+    "v0（Vercel）":"自研生成 + 部署链路",
+    "Google Stitch":"自研",
+    "可灵 AI":"自研模型",
+    "Runway":"自研模型",
+    "Pika":"自研模型",
+    "PixVerse":"自研模型",
+    "SkyProduction":"自研流水线",
+    "海螺 AI":"自研模型"
+  };
+  function tech(d){ return (d.tech && d.tech.trim()) || TECH[d.name] || "—"; }
+  function scene(d){
+    if(d.scene && d.scene.length) return d.scene.join("、");
+    var m = {"通用任务":"通用","编程与建站":"代码","办公文档与演示":"文档","图像生成":"图片","设计与品牌":"图片","UI/前端设计":"页面","视频生成":"视频","短剧创作":"短剧","短剧/漫剧":"短剧、漫剧","画布类":"图片、视频"};
+    return m[d.type] || "—";
+  }
+
   /* ===== 三档锚点：把统一锚点按规模/规格再切三档 ===== */
   var ANCHOR_TIERS = {
     "编程":["① 小改：单文件 / 约 30 分钟","② 功能点：3–5 文件 / 约 1 小时","③ 需求级：5–10 文件 / 半天"],
@@ -678,7 +1381,7 @@
     "阿里云通义万相（企业版）":["$0.636 ≈ ¥4.5","$2.04 ≈ ¥14.6","$3.82 ≈ ¥27.3"]
   };
   /* ===== 统一锚点：每类的最小计价单位 ===== */
-  var ANCHOR_MIN = {"编程":"1 次单文件修改","办公":"1 页 PPT","设计":"1 张图 / 1 个页面","画布":"1 秒视频（720P）"};
+  var ANCHOR_MIN = {"通用任务":"1 个任务","编程与建站":"1 个功能点","办公文档与演示":"1 页 PPT","图像生成":"1 张图","设计与品牌":"1 张物料","UI/前端设计":"1 个页面","视频生成":"1 秒视频","短剧创作":"1 秒成片","短剧/漫剧":"1 秒成片","画布类":"1 张图 / 1 秒成片"};
   var MIN_PRICE = {
     "Claude Code":"≈ ¥0.7–2.1 / 次",
     "OpenAI Codex":"≈ ¥1.4–3.6 / 次",
@@ -726,11 +1429,11 @@
     "Ideogram":"≈ ¥0.2–0.5 / 张",
     "Krea":"≈ ¥0.2–0.8 / 张"
   };
-  function minAnchor(d){ return ANCHOR_MIN[d.type] || d.anchor || "—"; }
-  function minPrice(d){ return MIN_PRICE[d.name] || "—"; }
+  function minAnchor(d){ return d.anchor || ANCHOR_MIN[d.type] || "—"; }
+  function minPrice(d){ return d.unit || MIN_PRICE[d.name] || "—"; }
 
   /* ===== 实用大类：按产品实际用途归类，用于排序与分组 ===== */
-  var CAT_ORDER = ["代码开发","办公文档","通用工作台","前端设计","图像设计","视频生成"];
+  var CAT_ORDER = ["通用任务","编程与建站","办公文档与演示","图像生成","设计与品牌","UI/前端设计","视频生成","短剧创作","短剧/漫剧","无限画布","故事板画布"];
   var PRACT_CAT = {
     "Claude Code":"代码开发","OpenAI Codex":"代码开发","Cursor":"代码开发","Replit Agent 4":"代码开发",
     "Microsoft 365 Copilot":"办公文档","Claude Cowork + Docs/Slides":"办公文档","WPS 灵犀":"办公文档",
@@ -807,6 +1510,7 @@
 
   var F = {
     type: document.getElementById("fType"), cat: document.getElementById("fCat"), name: document.getElementById("fName"), pos: document.getElementById("fPos"),
+    tech: document.getElementById("fTech"), scene: document.getElementById("fScene"),
     features: document.getElementById("fFeatures"), pros: document.getElementById("fPros"), cons: document.getElementById("fCons"),
     buzz: document.getElementById("fBuzz"),
     price: document.getElementById("fPrice"), anchor: document.getElementById("fAnchor"), anchorDesc: document.getElementById("fAnchorDesc"),
@@ -951,7 +1655,7 @@
   }
 
   // 数据版本迁移：新增的企业版产品自动补入已有本地数据，不覆盖用户修改
-  var DATA_VER = "7";
+  var DATA_VER = "14";
   var REMOVED_ENT = ["GitHub Copilot Enterprise","Amazon Q Developer","Gemini Code Assist Enterprise","Google Gemini Enterprise","钉钉悟空","飞书 aily","Notion Enterprise Agents","Adobe Express for Enterprise","稿定设计 企业版","Pixso 企业版","LiblibAI 企业版","阿里云通义万相（企业版）"];
   (function migrateData(){
     var v = null;
@@ -995,6 +1699,8 @@
     return '<tr data-id="' + d.id + '">' +
       '<td>' + typeBadge(d.type) + '</td>' +
       '<td><span class="cat">' + esc(practCat(d)) + '</span></td>' +
+      '<td><span class="tech">' + esc(tech(d)) + '</span></td>' +
+      '<td><span class="scene">' + esc(scene(d)) + '</span></td>' +
       '<td><span class="prod">' + esc(d.name) + '</span>' + (d.pos ? '<span class="pos">' + esc(d.pos) + '</span>' : '') +
         (d.updatedAt ? '<span class="upd' + (stale ? ' stale' : '') + '">更新于 ' + esc(d.updatedAt.slice(5)) + '</span>' : '') + '</td>' +
       '<td>' + toList(d.features) + '</td>' +
@@ -1020,7 +1726,7 @@
       return ia - ib;
     });
     tbody.innerHTML = rows.length ? rows.map(rowHTML).join("") :
-      '<tr><td colspan="11" class="empty">没有匹配的记录，可调整查询条件或点“新增产品”</td></tr>';
+      '<tr><td colspan="13" class="empty">没有匹配的记录，可调整查询条件或点“新增产品”</td></tr>';
     countEl.textContent = "显示 " + rows.length + " / 共 " + data.length + " 条";
     var stale = data.filter(function(d){ return daysSince(d.updatedAt) > settings.staleDays; }).length;
     document.getElementById("staleInfo").textContent = stale ? (stale + " 个产品超过 " + settings.staleDays + " 天未更新") : "全部在有效期内";
@@ -1038,6 +1744,8 @@
       var d = data.filter(function(x){ return x.id === editingId; })[0];
       mTitle.textContent = "编辑：" + d.name;
       F.type.value = d.type; F.cat.value = (d.cat || PRACT_CAT[d.name] || ""); F.name.value = d.name || ""; F.pos.value = d.pos || "";
+      F.tech.value = d.tech || TECH[d.name] || "";
+      F.scene.value = (d.scene || []).join("、");
       F.features.value = (d.features||[]).join("\n"); F.pros.value = (d.pros||[]).join("\n");
       F.cons.value = (d.cons||[]).join("\n"); F.price.value = (d.price||[]).join("\n");
       F.buzz.value = d.buzz || BUZZ[d.name] || "";
@@ -1045,7 +1753,7 @@
       F.unit.value = d.unit || ""; F.basis.value = d.basis || "";
     }else{
       mTitle.textContent = "新增产品";
-      F.type.value = typeEl.value || ""; F.cat.value = ""; F.name.value = ""; F.pos.value = "";
+      F.type.value = typeEl.value || ""; F.cat.value = ""; F.name.value = ""; F.pos.value = ""; F.tech.value = ""; F.scene.value = "";
       F.features.value = ""; F.pros.value = ""; F.cons.value = ""; F.price.value = ""; F.buzz.value = "";
       F.anchor.value = ""; F.anchorDesc.value = ""; F.unit.value = ""; F.basis.value = "";
     }
@@ -1058,7 +1766,8 @@
   function saveModal(){
     var name = F.name.value.trim();
     if(!name){ errEl.style.display = "block"; F.name.focus(); return; }
-    var obj = { type:(F.type.value || "").trim() || "其他", cat:(F.cat.value || "").trim(), name:name, pos:F.pos.value.trim(),
+    var obj = { type:(F.type.value || "").trim() || "其他", cat:(F.cat.value || "").trim(), name:name, pos:F.pos.value.trim(), tech:F.tech.value.trim(),
+      scene: F.scene.value.split(/[、,，;；]/).map(function(s){ return s.trim(); }).filter(Boolean),
       features:splitLines(F.features.value), pros:splitLines(F.pros.value), cons:splitLines(F.cons.value),
       price:splitLines(F.price.value), anchor:F.anchor.value.trim(), anchorDesc:F.anchorDesc.value.trim(),
       unit:F.unit.value.trim(), basis:F.basis.value.trim(), buzz:F.buzz.value.trim(), updatedAt: today() };
@@ -1286,11 +1995,11 @@
 
   /* ================= 导出 ================= */
   function exportCSV(){
-    var head = ["类型","实用大类","产品","定位","核心功能","优点","缺点","用户口碑","价格","统一锚点","依据","更新于"];
+    var head = ["类型","实用大类","技术底座","覆盖场景","产品","定位","核心功能","优点","缺点","用户口碑","价格","统一锚点","依据","更新于"];
     var q = function(v){ return '"' + String(v == null ? "" : v).replace(/"/g, '""') + '"'; };
     var lines = [head.map(q).join(",")];
     data.forEach(function(d){
-      lines.push([d.type,practCat(d),d.name,d.pos,(d.features||[]).join("；"),(d.pros||[]).join("；"),
+      lines.push([d.type,practCat(d),tech(d),scene(d),d.name,d.pos,(d.features||[]).join("；"),(d.pros||[]).join("；"),
         (d.cons||[]).join("；"),buzz(d),(d.price||[]).join(" / "),d.anchor,d.basis,d.updatedAt||""].map(q).join(","));
     });
     var blob = new Blob(["\uFEFF" + lines.join("\r\n")], {type:"text/csv;charset=utf-8"});
