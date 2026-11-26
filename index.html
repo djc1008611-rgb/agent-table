@@ -752,8 +752,8 @@
      features:["文生图 / 图生视频","生成物直接落画布","批量生成（最多 32 张）"],
      pros:["免费额度可试","贴合抖音生态","批量能力强"],cons:["精细控制弱","规则调整频繁","商用授权需确认"],
      buzz:"免费额度好评；吐槽规则变动与一致性",
-     price:["免费额度 + 会员订阅"],
-     anchor:"1 张图",anchorDesc:"1024×1024 起",unit:"未公开（估 ¥0.1–1.2 / 张）",basis:"按站内积分扣点"},
+     price:["免费额度 + 会员：连续包月 ¥69/月","连续包年 ¥659/年"],
+     anchor:"1 张图",anchorDesc:"1024×1024 起",unit:"按会员积分扣点（积分数量未公开）",basis:"App Store 官方订阅页：¥69/月、¥659/年，每月赠积分"},
     {type:"画布类",cat:"故事板画布",name:"万镜一刻",pos:"阿里云 · 故事板 + 无限画布 + Agent",
      tech:"自研平台与工作流",scene:["视频","短剧"],
      features:["故事板 / 无限画布 / Agent 三模式","节点二次编辑","短剧与投流模板"],
@@ -887,8 +887,8 @@
      features:["搜索 + 写作 + 做表","多轮任务编排","文档解析"],
      pros:["国内可用","免费额度大","中文好"],cons:["深度任务弱","产物导出一般","企业治理弱"],
      buzz:"中文体验好评；吐槽深度任务与导出",
-     price:["免费版","会员制（官网核对）"],
-     anchor:"1 个任务",anchorDesc:"一次完整任务",unit:"未公开",basis:"按会员额度折算"},
+     price:["会员 ¥45 档（用户实测）","免费版含少量积分"],
+     anchor:"1 个任务",anchorDesc:"一次完整任务",unit:"未公开（单次约扣 1.3 万积分）",basis:"小红书用户实测：充 45 元会员，单次输出约耗 1.3 万积分"},
     {type:"通用任务",cat:"搜索 Agent",name:"纳米 AI",pos:"360 · 搜索型 Agent",
      tech:"自研 + 多模型",scene:["通用"],
      features:["多步搜索与整合","文档/网页解析","一键成稿"],
@@ -969,8 +969,8 @@
      features:["剧本→分镜→成片","角色一致性管理","批量出片"],
      pros:["流程完整","上手较快","适合批量"],cons:["成片质量波动","积分不透明","公开信息少"],
      buzz:"一站式流程好评；吐槽成片质量波动",
-     price:["会员/积分制（官网核对）"],
-     anchor:"1 秒成片",anchorDesc:"短剧成片",unit:"未公开",basis:"按积分折算"},
+     price:["充值比例约 1:10（1,220 积分 ≈ ¥122）","最大算力包约 ¥47.8/集"],
+     anchor:"1 秒成片",anchorDesc:"90 秒一集约 1,220 积分",unit:"≈ ¥0.53–1.36 / 秒（用户实测）",basis:"社区实测：720P 约 13.5 积分/秒；充值 1:10 折 ¥1.36/秒，大包折 ¥0.53/秒"},
     {type:"短剧/漫剧",cat:"影视制作",name:"Seko 2.0",pos:"商汤 · 影视级生成 Agent",
      tech:"自研模型",scene:["短剧","短片"],
      features:["剧本与分镜生成","角色与场景一致性","视频生成与后期"],
@@ -1205,8 +1205,81 @@
   ]);
   DEFAULTS.forEach(function(d){ if(!d.updatedAt) d.updatedAt = "2026-11-25"; });
 
+  /* ===== 短剧创作补充 ===== */
+  DEFAULTS = DEFAULTS.concat([
+    {type:"短剧创作",cat:"影视制作平台",name:"LTX Studio",pos:"Lightricks · AI 影视制作平台",
+     tech:"自研模型 + 编排",scene:["短剧","短片"],
+     features:["剧本→分镜→镜头生成","角色与风格一致性","时间线与配音"],
+     pros:["影视化流程完整","角色一致性较好","支持长片结构"],cons:["价格偏高","中文支持一般","成片仍需精修"],
+     buzz:"流程专业；吐槽价格与中文",
+     price:["Free","Standard $15/月","Pro $35/月（官网核对）"],
+     anchor:"1 秒成片",anchorDesc:"影视级片段",unit:"≈ ¥1–4 / 秒",basis:"按订阅额度折算"},
+    {type:"短剧创作",cat:"AI 分镜",name:"Katalist",pos:"AI 分镜与故事板",
+     tech:"自研 + 多模型",scene:["短剧","短片"],
+     features:["剧本自动拆分镜","角色一致性管理","故事板导出"],
+     pros:["分镜专业","角色一致","适合前期"],cons:["只做前期","价格中等","中文一般"],
+     buzz:"分镜效率高；吐槽只覆盖前期",
+     price:["订阅制（官网核对）"],
+     anchor:"1 秒成片",anchorDesc:"分镜对应片段",unit:"≈ ¥0.3–1.5 / 秒",basis:"按订阅均摊"},
+    {type:"短剧创作",cat:"故事板",name:"Boords",pos:"故事板与分镜协作",
+     tech:"自研 + AI 生成",scene:["短剧","短片"],
+     features:["故事板绘制与协作","AI 生成分镜图","评审与版本"],
+     pros:["协作成熟","分镜管理强","上手快"],cons:["不做视频生成","AI 能力基础","中文一般"],
+     buzz:"分镜协作好评；吐槽生成能力",
+     price:["Free","Starter $9/月（官网核对）"],
+     anchor:"1 秒成片",anchorDesc:"分镜对应片段",unit:"≈ ¥0.3–1 / 秒",basis:"按订阅均摊"},
+    {type:"短剧创作",cat:"剧集生成",name:"Showrunner",pos:"AI 剧集生成实验平台",
+     tech:"自研 Agent",scene:["短剧"],
+     features:["一句话生成剧集剧本与分镜","角色与场景延续","自动成片"],
+     pros:["端到端剧集生成","概念前沿","角色延续"],cons:["成熟度低","可及性受限","成片质量不稳"],
+     buzz:"概念惊艳；吐槽成熟度与可及性",
+     price:["订阅/邀请制（官网核对）"],
+     anchor:"1 秒成片",anchorDesc:"剧集片段",unit:"未公开",basis:"按订阅折算"},
+    {type:"短剧创作",cat:"模型共创",name:"Vidu 共创",pos:"生数科技 × 万兴 · 大模型共创 Agent",
+     tech:"自研视频模型",scene:["短剧","漫剧"],
+     features:["多模型共创分镜","角色与镜头控制","与制作平台打通"],
+     pros:["视频质量好","与制作链路结合","国内可用"],cons:["生态较新","价格不透明","一致性待验证"],
+     buzz:"视频质量好评；吐槽生态与价格",
+     price:["积分/商务（官网核对）"],
+     anchor:"1 秒成片",anchorDesc:"漫剧成片",unit:"未公开",basis:"按积分折算"}
+  ]);
+  DEFAULTS.forEach(function(d){ if(!d.updatedAt) d.updatedAt = "2026-11-25"; });
+
+  /* ===== 画布类补充 ===== */
+  DEFAULTS = DEFAULTS.concat([
+    {type:"画布类",cat:"空间画布",name:"tldraw",pos:"开源空间画布 + Agent 实验",
+     tech:"开源 + 自研 harness",scene:["图片","通用"],
+     features:["无限画布与对象操作","Agent 读取画布上下文","开源可自建"],
+     pros:["空间交互原语清晰","开源可控","可嵌入自有产品"],cons:["非成品工具","需工程接入","商业化有限"],
+     buzz:"开发者好评；吐槽需要自己搭",
+     price:["开源免费","企业定制"],
+     anchor:"1 个任务",anchorDesc:"一次画布任务",unit:"≈ ¥0.5–3 / 任务",basis:"按模型用量折算"},
+    {type:"画布类",cat:"白板协作",name:"Miro AI",pos:"白板协作 + AI Agent",
+     tech:"自研 + 外采模型",scene:["通用"],
+     features:["无限白板与模板","AI 生成流程图/总结","团队协作与集成"],
+     pros:["协作生态最大","模板丰富","集成广"],cons:["AI 能力偏助手","价格按席位","中文一般"],
+     buzz:"白板协作好评；吐槽 AI 深度",
+     price:["Free","Starter $8/席","Business $16/席","Enterprise $20/席（官网核对）"],
+     anchor:"1 个任务",anchorDesc:"一次白板任务",unit:"≈ ¥0.5–2 / 任务",basis:"按席位均摊"},
+    {type:"画布类",cat:"白板协作",name:"FigJam AI",pos:"Figma 白板 + AI",
+     tech:"自研 + 外采模型",scene:["通用","页面"],
+     features:["白板与模板生成","便签聚类与总结","与 Figma 设计流打通"],
+     pros:["与设计流打通","模板质量高","协作顺"],cons:["AI 偏辅助","依赖 Figma 订阅","中文一般"],
+     buzz:"设计团队好用；吐槽 AI 深度",
+     price:["随 Figma 席位","独立白板席 $5/席（官网核对）"],
+     anchor:"1 个任务",anchorDesc:"一次白板任务",unit:"≈ ¥0.3–1.5 / 任务",basis:"按席位均摊"},
+    {type:"画布类",cat:"创意画布",name:"Flora",pos:"面向创意团队的无尽画布",
+     tech:"多模型编排",scene:["图片"],
+     features:["节点式创意画布","多模型串联","团队素材库"],
+     pros:["创意链路可视化","适合团队","模型可选"],cons:["学习成本","价格偏高","中文弱"],
+     buzz:"创意团队好评；吐槽门槛与价格",
+     price:["订阅制（官网核对）"],
+     anchor:"1 张图",anchorDesc:"画布产出图",unit:"≈ ¥0.5–3 / 张",basis:"按订阅额度折算"}
+  ]);
+  DEFAULTS.forEach(function(d){ if(!d.updatedAt) d.updatedAt = "2026-11-25"; });
+
   // 大厂产品不再展示（保留数据便于日后恢复）
-  var HIDDEN_NAMES = ["v0（Vercel）","Midjourney","Ideogram","Recraft","Krea","可灵 AI","Runway","Pika","PixVerse","海螺 AI","即梦"];
+  var HIDDEN_NAMES = ["v0（Vercel）","Midjourney","Ideogram","Recraft","Krea","可灵 AI","Runway","Pika","PixVerse","海螺 AI","Motiff 妙多"];
   function visibleDefaults(){
     return clone(DEFAULTS).filter(function(d){ return HIDDEN_NAMES.indexOf(d.name) < 0; });
   }
@@ -1655,7 +1728,7 @@
   }
 
   // 数据版本迁移：新增的企业版产品自动补入已有本地数据，不覆盖用户修改
-  var DATA_VER = "14";
+  var DATA_VER = "18";
   var REMOVED_ENT = ["GitHub Copilot Enterprise","Amazon Q Developer","Gemini Code Assist Enterprise","Google Gemini Enterprise","钉钉悟空","飞书 aily","Notion Enterprise Agents","Adobe Express for Enterprise","稿定设计 企业版","Pixso 企业版","LiblibAI 企业版","阿里云通义万相（企业版）"];
   (function migrateData(){
     var v = null;
